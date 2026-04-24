@@ -1,0 +1,3 @@
+from app.Controllers.producto_controller import ProductoController
+from app.Controllers.pedido_controller import PedidoController
+from app.Controllers.rentabilidad_controller import RentabilidadController
