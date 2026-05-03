@@ -6,321 +6,183 @@
 <title>Glamour Bisutería · Tienda</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  /* ── Variables ── */
-  :root {
-    --gold:    #C9A84C;
-    --gold-lt: #E8D5A3;
-    --cream:   #FAF7F2;
-    --dark:    #1A1612;
-    --mid:     #4A3F35;
-    --muted:   #9E8E7E;
-    --white:   #FFFFFF;
-    --rose:    #D4A0A0;
-    --card-bg: #FFFFFF;
-    --shadow:  0 4px 24px rgba(26,22,18,.08);
-  }
+:root{--gold:#C9A84C;--gold-lt:#E8D5A3;--cream:#FAF7F2;--dark:#1A1612;--mid:#4A3F35;--muted:#9E8E7E;--white:#FFFFFF;--shadow:0 4px 24px rgba(26,22,18,.08);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Loader */
+#loader{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;}
+.logo-anim{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--gold);letter-spacing:.15em;}
+.spinner{width:36px;height:36px;border:2px solid var(--gold-lt);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--dark);
-    min-height: 100vh;
-  }
+/* Header */
+header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);display:flex;align-items:center;justify-content:space-between;height:70px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(201,168,76,.25);}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold);letter-spacing:.1em;}
+.brand span{font-style:italic;font-weight:300;}
+.cart-btn{background:none;border:1px solid var(--gold);color:var(--gold);padding:8px 20px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:.85rem;letter-spacing:.08em;display:flex;align-items:center;gap:8px;transition:all .2s;}
+.cart-btn:hover{background:var(--gold);color:var(--dark);}
+.cart-count{background:var(--gold);color:var(--dark);border-radius:50%;width:20px;height:20px;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
 
-  /* ── Loader ── */
-  #loader {
-    position: fixed; inset: 0; background: var(--cream);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 9999; gap: 16px;
-  }
-  #loader .logo-anim { font-family:'Cormorant Garamond',serif; font-size:2.8rem; color:var(--gold); letter-spacing:.15em; }
-  #loader .spinner { width:36px; height:36px; border:2px solid var(--gold-lt); border-top-color:var(--gold); border-radius:50%; animation:spin .9s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
+/* Hero */
+.hero{background:linear-gradient(135deg,var(--dark) 0%,#2C231A 100%);color:var(--white);text-align:center;padding:clamp(48px,10vw,100px) 24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.12) 0%,transparent 70%);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:var(--gold);letter-spacing:.08em;position:relative;}
+.hero p{margin-top:12px;color:var(--gold-lt);font-size:1rem;font-weight:300;letter-spacing:.06em;position:relative;}
+.search-wrap{max-width:520px;margin:28px auto 0;display:flex;background:var(--white);border:1px solid var(--gold-lt);border-radius:2px;overflow:hidden;box-shadow:var(--shadow);position:relative;}
+.search-wrap input{flex:1;border:none;padding:14px 18px;font-family:inherit;font-size:.95rem;color:var(--dark);outline:none;background:transparent;}
+.search-wrap button{background:var(--gold);border:none;padding:0 22px;cursor:pointer;color:var(--dark);font-size:.9rem;letter-spacing:.06em;font-family:inherit;font-weight:500;transition:background .2s;}
+.search-wrap button:hover{background:#b8953c;}
 
-  /* ── Header ── */
-  header {
-    background: var(--dark); color: var(--white);
-    padding: 0 clamp(16px,4vw,64px);
-    display: flex; align-items: center; justify-content: space-between;
-    height: 70px; position: sticky; top: 0; z-index: 100;
-    border-bottom: 1px solid rgba(201,168,76,.25);
-  }
-  .brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold); letter-spacing:.1em; }
-  .brand span { font-style:italic; font-weight:300; }
-  .cart-btn {
-    background: none; border: 1px solid var(--gold); color: var(--gold);
-    padding: 8px 20px; border-radius: 2px; cursor: pointer; font-family: inherit;
-    font-size: .85rem; letter-spacing: .08em; display: flex; align-items: center; gap: 8px;
-    transition: all .2s;
-  }
-  .cart-btn:hover { background: var(--gold); color: var(--dark); }
-  .cart-count {
-    background: var(--gold); color: var(--dark); border-radius: 50%;
-    width: 20px; height: 20px; font-size: .7rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
+/* Categorías */
+.cats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:28px 24px 16px;}
+.cat-pill{border:1px solid var(--gold-lt);background:transparent;color:var(--mid);padding:7px 18px;border-radius:999px;cursor:pointer;font-family:inherit;font-size:.82rem;letter-spacing:.05em;transition:all .2s;}
+.cat-pill.active,.cat-pill:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);}
 
-  /* ── Hero ── */
-  .hero {
-    background: linear-gradient(135deg, var(--dark) 0%, #2C231A 100%);
-    color: var(--white); text-align: center;
-    padding: clamp(48px, 10vw, 100px) 24px;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content:''; position:absolute; inset:0;
-    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,.12) 0%, transparent 70%);
-  }
-  .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.4rem,6vw,4.5rem); font-weight:300; color:var(--gold); letter-spacing:.08em; position:relative; }
-  .hero p { margin-top:12px; color:var(--gold-lt); font-size:1rem; font-weight:300; letter-spacing:.06em; position:relative; }
+/* Grid */
+.products-section{padding:0 clamp(16px,4vw,64px) 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--mid);margin-bottom:28px;letter-spacing:.04em;border-bottom:1px solid var(--gold-lt);padding-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.prod-count{font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--muted);font-weight:400;}
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+.card{background:var(--white);border-radius:4px;box-shadow:var(--shadow);overflow:hidden;transition:transform .25s,box-shadow .25s;}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,22,18,.13);}
+.card-img{height:200px;background:linear-gradient(135deg,#F5ECD7 0%,#EAD9C0 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;}
+.badge-stock{position:absolute;top:10px;right:10px;background:var(--dark);color:var(--gold);font-size:.7rem;padding:3px 8px;border-radius:2px;letter-spacing:.05em;}
+.badge-low{background:#8B3A3A;color:#FFD5D5;}
+.card-body{padding:16px;}
+.card-cat{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--dark);margin-bottom:6px;line-height:1.3;}
+.card-code{font-size:.75rem;color:var(--muted);margin-bottom:12px;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;}
+.price{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);font-weight:600;}
+.add-btn{background:var(--dark);color:var(--white);border:none;padding:8px 16px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:.8rem;letter-spacing:.06em;transition:background .2s;}
+.add-btn:hover{background:var(--gold);color:var(--dark);}
+.add-btn:disabled{background:#ccc;cursor:not-allowed;}
+.no-results{text-align:center;color:var(--muted);padding:60px 0;font-size:1.1rem;grid-column:1/-1;}
 
-  /* ── Search ── */
-  .search-bar {
-    max-width: 520px; margin: 32px auto; display: flex;
-    background: var(--white); border: 1px solid var(--gold-lt); border-radius: 2px;
-    overflow: hidden; box-shadow: var(--shadow);
-  }
-  .search-bar input {
-    flex:1; border:none; padding: 14px 18px; font-family:inherit;
-    font-size:.95rem; color:var(--dark); outline:none; background:transparent;
-  }
-  .search-bar button {
-    background: var(--gold); border:none; padding: 0 22px;
-    cursor:pointer; color:var(--dark); font-size:.9rem; letter-spacing:.06em;
-    font-family:inherit; font-weight:500; transition: background .2s;
-  }
-  .search-bar button:hover { background: #b8953c; }
+/* Error banner */
+.error-banner{background:#3D1A1A;color:#FFB3B3;padding:16px 24px;text-align:center;font-size:.9rem;display:none;}
+.error-banner.show{display:block;}
 
-  /* ── Categorías ── */
-  .cats {
-    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-    padding: 0 24px 32px;
-  }
-  .cat-pill {
-    border: 1px solid var(--gold-lt); background: transparent;
-    color: var(--mid); padding: 7px 18px; border-radius: 999px;
-    cursor: pointer; font-family:inherit; font-size:.82rem; letter-spacing:.05em;
-    transition: all .2s;
-  }
-  .cat-pill.active, .cat-pill:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+/* Carrito */
+.cart-overlay{position:fixed;inset:0;background:rgba(26,22,18,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+.cart-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--white);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(26,22,18,.15);}
+.cart-panel.open{transform:translateX(0);}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #EEE;background:var(--dark);}
+.cart-header h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);letter-spacing:.06em;}
+.close-btn{background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer;}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
+.cart-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:14px 0;border-bottom:1px solid #F5F5F5;align-items:start;}
+.ci-name{font-weight:500;font-size:.9rem;color:var(--dark);}
+.ci-meta{font-size:.8rem;color:var(--muted);margin-top:2px;}
+.ci-controls{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.qty-btn{width:26px;height:26px;border:1px solid var(--gold-lt);background:none;cursor:pointer;border-radius:2px;font-size:.9rem;color:var(--mid);transition:all .15s;}
+.qty-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+.qty-num{font-size:.9rem;font-weight:500;min-width:20px;text-align:center;}
+.ci-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);font-weight:600;text-align:right;}
+.ci-remove{background:none;border:none;color:#ccc;cursor:pointer;font-size:.9rem;transition:color .15s;}
+.ci-remove:hover{color:#E74C3C;}
+.cart-empty{text-align:center;padding:60px 0;color:var(--muted);}
+.cart-empty .icon{font-size:3rem;margin-bottom:12px;}
+.cart-footer{padding:20px 24px;border-top:1px solid #EEE;background:#FAFAFA;}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:16px;}
+.cart-total-label{font-size:.9rem;color:var(--muted);}
+.cart-total-val{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--dark);font-weight:600;}
+.checkout-btn{width:100%;background:var(--gold);color:var(--dark);border:none;padding:14px;font-family:inherit;font-size:1rem;font-weight:500;letter-spacing:.08em;cursor:pointer;border-radius:2px;transition:background .2s;}
+.checkout-btn:hover{background:#b8953c;}
 
-  /* ── Grid productos ── */
-  .products-section { padding: 0 clamp(16px,4vw,64px) 80px; }
-  .section-title {
-    font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:400;
-    color:var(--mid); margin-bottom:28px; letter-spacing:.04em;
-    border-bottom:1px solid var(--gold-lt); padding-bottom:12px;
-  }
-  .grid {
-    display: grid; gap: 24px;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  }
-  .card {
-    background: var(--card-bg); border-radius: 4px;
-    box-shadow: var(--shadow); overflow: hidden;
-    transition: transform .25s, box-shadow .25s; cursor:pointer;
-  }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,22,18,.13); }
-  .card-img {
-    height: 200px; background: linear-gradient(135deg, #F5ECD7 0%, #EAD9C0 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3.5rem; position: relative;
-  }
-  .badge-stock {
-    position: absolute; top: 10px; right: 10px;
-    background: var(--dark); color: var(--gold); font-size:.7rem;
-    padding: 3px 8px; border-radius: 2px; letter-spacing:.05em;
-  }
-  .badge-low { background: #8B3A3A; color: #FFD5D5; }
-  .card-body { padding: 16px; }
-  .card-cat { font-size:.72rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
-  .card-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600; color:var(--dark); margin-bottom:6px; line-height:1.3; }
-  .card-code { font-size:.75rem; color:var(--muted); margin-bottom:12px; }
-  .card-footer { display:flex; align-items:center; justify-content:space-between; }
-  .price { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--gold); font-weight:600; }
-  .add-btn {
-    background: var(--dark); color: var(--white); border:none;
-    padding: 8px 16px; border-radius: 2px; cursor:pointer;
-    font-family:inherit; font-size:.8rem; letter-spacing:.06em;
-    transition: background .2s;
-  }
-  .add-btn:hover { background: var(--gold); color: var(--dark); }
-  .add-btn:disabled { background: #ccc; cursor:not-allowed; }
-  .no-results { text-align:center; color:var(--muted); padding:60px 0; font-size:1.1rem; }
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,22,18,.6);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:4px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .3s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-head{padding:24px 28px 16px;border-bottom:1px solid #EEE;display:flex;align-items:center;justify-content:space-between;}
+.modal-head h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--dark);}
+.modal-body{padding:24px 28px;}
+.form-group{margin-bottom:18px;}
+label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;letter-spacing:.04em;}
+input[type=text],input[type=email],input[type=tel],textarea,select{width:100%;border:1px solid #E0D8CC;border-radius:2px;padding:11px 14px;font-family:inherit;font-size:.9rem;color:var(--dark);outline:none;transition:border-color .2s;background:var(--white);}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);}
+textarea{resize:vertical;min-height:80px;}
+.order-summary{background:var(--cream);border-radius:4px;padding:16px;margin-bottom:20px;}
+.order-summary h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--mid);margin-bottom:12px;}
+.sum-item{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;color:var(--mid);}
+.sum-total{display:flex;justify-content:space-between;font-weight:700;padding-top:12px;border-top:1px solid var(--gold-lt);margin-top:8px;}
+.sum-total span:last-child{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--gold);}
+.submit-btn{width:100%;background:var(--dark);color:var(--white);border:none;padding:14px;font-family:inherit;font-size:1rem;letter-spacing:.08em;cursor:pointer;border-radius:2px;transition:background .2s;margin-top:4px;}
+.submit-btn:hover{background:var(--gold);color:var(--dark);}
+.submit-btn:disabled{background:#aaa;cursor:not-allowed;}
+.api-error{background:#FFF0F0;border:1px solid #FFCCCC;border-radius:4px;padding:12px 16px;color:#8B0000;font-size:.85rem;margin-bottom:16px;display:none;}
+.api-error.show{display:block;}
 
-  /* ── Carrito lateral ── */
-  .cart-overlay {
-    position: fixed; inset: 0; background: rgba(26,22,18,.5);
-    z-index: 200; opacity: 0; pointer-events:none; transition: opacity .3s;
-  }
-  .cart-overlay.open { opacity:1; pointer-events:all; }
-  .cart-panel {
-    position: fixed; top:0; right:0; bottom:0; width:min(420px,100vw);
-    background: var(--white); z-index:201; display:flex; flex-direction:column;
-    transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1);
-    box-shadow: -8px 0 40px rgba(26,22,18,.15);
-  }
-  .cart-panel.open { transform:translateX(0); }
-  .cart-header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 20px 24px; border-bottom:1px solid #EEE;
-    background: var(--dark);
-  }
-  .cart-header h2 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--gold); letter-spacing:.06em; }
-  .close-btn { background:none; border:none; color:var(--gold); font-size:1.5rem; cursor:pointer; }
-  .cart-items { flex:1; overflow-y:auto; padding:16px 24px; }
-  .cart-item {
-    display:grid; grid-template-columns:1fr auto; gap:8px;
-    padding: 14px 0; border-bottom:1px solid #F5F5F5; align-items:start;
-  }
-  .ci-name { font-weight:500; font-size:.9rem; color:var(--dark); }
-  .ci-meta { font-size:.8rem; color:var(--muted); margin-top:2px; }
-  .ci-controls { display:flex; align-items:center; gap:8px; margin-top:6px; }
-  .qty-btn { width:26px; height:26px; border:1px solid var(--gold-lt); background:none; cursor:pointer; border-radius:2px; font-size:.9rem; color:var(--mid); transition:all .15s; }
-  .qty-btn:hover { background:var(--gold); border-color:var(--gold); color:var(--dark); }
-  .qty-num { font-size:.9rem; font-weight:500; min-width:20px; text-align:center; }
-  .ci-price { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--gold); font-weight:600; text-align:right; }
-  .ci-remove { background:none; border:none; color:#ccc; cursor:pointer; font-size:.9rem; transition:color .15s; }
-  .ci-remove:hover { color:#E74C3C; }
-  .cart-empty { text-align:center; padding:60px 0; color:var(--muted); }
-  .cart-empty .icon { font-size:3rem; margin-bottom:12px; }
-  .cart-footer { padding:20px 24px; border-top:1px solid #EEE; background:#FAFAFA; }
-  .cart-total-row { display:flex; justify-content:space-between; margin-bottom:16px; }
-  .cart-total-label { font-size:.9rem; color:var(--muted); }
-  .cart-total-val { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--dark); font-weight:600; }
-  .checkout-btn {
-    width:100%; background:var(--gold); color:var(--dark); border:none;
-    padding:14px; font-family:inherit; font-size:1rem; font-weight:500;
-    letter-spacing:.08em; cursor:pointer; border-radius:2px; transition:background .2s;
-  }
-  .checkout-btn:hover { background:#b8953c; }
+/* Factura */
+.inv-head{background:var(--dark);color:var(--white);padding:28px;text-align:center;}
+.inv-brand{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);letter-spacing:.1em;}
+.inv-sub{font-size:.8rem;color:var(--gold-lt);margin-top:4px;letter-spacing:.08em;}
+.inv-body{padding:24px 28px;}
+.inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.inv-meta-box{background:var(--cream);padding:14px;border-radius:4px;}
+.inv-meta-box .lbl{font-size:.72rem;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;}
+.inv-meta-box .val{font-weight:500;color:var(--dark);font-size:.92rem;}
+.inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+.inv-table th{background:var(--dark);color:var(--gold);padding:10px 12px;font-size:.78rem;letter-spacing:.06em;text-align:left;}
+.inv-table td{padding:10px 12px;border-bottom:1px solid #F0EAE0;font-size:.87rem;}
+.inv-table tr:last-child td{border-bottom:none;}
+.inv-totals{margin-left:auto;max-width:260px;}
+.inv-totals .row{display:flex;justify-content:space-between;padding:6px 0;font-size:.88rem;color:var(--mid);}
+.inv-totals .grand{display:flex;justify-content:space-between;padding-top:10px;border-top:2px solid var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--dark);font-weight:600;margin-top:6px;}
+.inv-estado{display:inline-block;padding:4px 12px;border-radius:2px;font-size:.75rem;letter-spacing:.08em;font-weight:600;text-transform:uppercase;}
+.estado-pendiente{background:#FFF8E1;color:#8B6914;}
+.estado-despachado{background:#E8F5E9;color:#2E7D32;}
+.estado-cancelado{background:#FFEBEE;color:#8B0000;}
+.inv-footer{text-align:center;padding:16px 28px 28px;font-size:.8rem;color:var(--muted);letter-spacing:.04em;}
+.print-btn{display:block;margin:16px auto 0;background:var(--gold);color:var(--dark);border:none;padding:11px 32px;font-family:inherit;font-size:.9rem;letter-spacing:.07em;cursor:pointer;border-radius:2px;}
 
-  /* ── Modal checkout ── */
-  .modal-overlay {
-    position:fixed; inset:0; background:rgba(26,22,18,.6);
-    z-index:300; display:flex; align-items:center; justify-content:center;
-    padding:24px; opacity:0; pointer-events:none; transition:opacity .3s;
-  }
-  .modal-overlay.open { opacity:1; pointer-events:all; }
-  .modal {
-    background:var(--white); border-radius:4px; width:100%; max-width:560px;
-    max-height:90vh; overflow-y:auto;
-    transform:translateY(20px); transition:transform .3s;
-  }
-  .modal-overlay.open .modal { transform:translateY(0); }
-  .modal-head {
-    padding:24px 28px 16px; border-bottom:1px solid #EEE;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .modal-head h2 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--dark); }
-  .modal-body { padding:24px 28px; }
-  .form-group { margin-bottom:18px; }
-  label { display:block; font-size:.82rem; color:var(--muted); margin-bottom:6px; letter-spacing:.04em; }
-  input[type=text], input[type=email], input[type=tel], textarea, select {
-    width:100%; border:1px solid #E0D8CC; border-radius:2px;
-    padding:11px 14px; font-family:inherit; font-size:.9rem; color:var(--dark);
-    outline:none; transition:border-color .2s; background:var(--white);
-  }
-  input:focus, textarea:focus, select:focus { border-color:var(--gold); }
-  textarea { resize:vertical; min-height:80px; }
-  .order-summary { background:var(--cream); border-radius:4px; padding:16px; margin-bottom:20px; }
-  .order-summary h3 { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--mid); margin-bottom:12px; }
-  .sum-item { display:flex; justify-content:space-between; font-size:.85rem; padding:4px 0; color:var(--mid); }
-  .sum-total { display:flex; justify-content:space-between; font-weight:700; padding-top:12px; border-top:1px solid var(--gold-lt); margin-top:8px; }
-  .sum-total span:last-child { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); }
-  .submit-btn {
-    width:100%; background:var(--dark); color:var(--white); border:none;
-    padding:14px; font-family:inherit; font-size:1rem; letter-spacing:.08em;
-    cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px;
-  }
-  .submit-btn:hover { background:var(--gold); color:var(--dark); }
-  .submit-btn:disabled { background:#aaa; cursor:not-allowed; }
+/* Toast */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:var(--white);padding:12px 24px;border-radius:2px;font-size:.88rem;opacity:0;transition:all .35s;z-index:500;white-space:nowrap;border-left:3px solid var(--gold);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.error{border-left-color:#E74C3C;}
 
-  /* ── Factura modal ── */
-  .invoice {
-    font-family:'DM Sans',sans-serif; padding:0;
-  }
-  .inv-head { background:var(--dark); color:var(--white); padding:28px; text-align:center; }
-  .inv-head .inv-brand { font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold); letter-spacing:.1em; }
-  .inv-head .inv-sub { font-size:.8rem; color:var(--gold-lt); margin-top:4px; letter-spacing:.08em; }
-  .inv-body { padding:24px 28px; }
-  .inv-meta { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
-  .inv-meta-box { background:var(--cream); padding:14px; border-radius:4px; }
-  .inv-meta-box .lbl { font-size:.72rem; color:var(--muted); letter-spacing:.06em; margin-bottom:4px; }
-  .inv-meta-box .val { font-weight:500; color:var(--dark); font-size:.92rem; }
-  .inv-table { width:100%; border-collapse:collapse; margin-bottom:20px; }
-  .inv-table th { background:var(--dark); color:var(--gold); padding:10px 12px; font-size:.78rem; letter-spacing:.06em; text-align:left; }
-  .inv-table td { padding:10px 12px; border-bottom:1px solid #F0EAE0; font-size:.87rem; }
-  .inv-table tr:last-child td { border-bottom:none; }
-  .inv-totals { margin-left:auto; max-width:260px; }
-  .inv-totals .row { display:flex; justify-content:space-between; padding:6px 0; font-size:.88rem; color:var(--mid); }
-  .inv-totals .grand { display:flex; justify-content:space-between; padding-top:10px; border-top:2px solid var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--dark); font-weight:600; margin-top:6px; }
-  .inv-footer { text-align:center; padding:16px 28px 28px; font-size:.8rem; color:var(--muted); letter-spacing:.04em; }
-  .print-btn {
-    display:block; margin:16px auto 0; background:var(--gold); color:var(--dark);
-    border:none; padding:11px 32px; font-family:inherit; font-size:.9rem;
-    letter-spacing:.07em; cursor:pointer; border-radius:2px;
-  }
-
-  /* ── Toast ── */
-  .toast {
-    position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:var(--dark); color:var(--white); padding:12px 24px; border-radius:2px;
-    font-size:.88rem; opacity:0; transition:all .35s; z-index:500; white-space:nowrap;
-    border-left:3px solid var(--gold);
-  }
-  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-  .toast.error { border-left-color:#E74C3C; }
-
-  @media print {
-    body > *:not(.modal-overlay) { display:none !important; }
-    .modal-overlay { position:static; background:none; padding:0; display:block !important; opacity:1 !important; }
-    .modal { max-height:none; box-shadow:none; }
-    .print-btn, .close-btn { display:none !important; }
-  }
+@media print{body>*:not(.modal-overlay){display:none!important;}.modal-overlay{position:static;background:none;padding:0;display:block!important;opacity:1!important;pointer-events:all!important;}.modal{max-height:none;box-shadow:none;}.print-btn,.close-btn{display:none!important;}}
 </style>
 </head>
 <body>
 
-<!-- Loader -->
-<div id="loader">
-  <div class="logo-anim">✦ Glamour</div>
-  <div class="spinner"></div>
-</div>
+<div id="loader"><div class="logo-anim">✦ Glamour</div><div class="spinner"></div></div>
 
-<!-- Header -->
+<div class="error-banner" id="errBanner"></div>
+
 <header>
   <div class="brand">✦ <span>Glamour</span> Bisutería</div>
   <button class="cart-btn" onclick="toggleCart()">
-    🛒 Carrito
-    <span class="cart-count" id="cartCount">0</span>
+    🛒 Carrito <span class="cart-count" id="cartCount">0</span>
   </button>
 </header>
 
-<!-- Hero -->
 <div class="hero">
   <h1>Bisutería & Accesorios</h1>
   <p>Colección 2026 · Bucaramanga, Colombia</p>
-  <div class="search-bar" style="margin:28px auto 0;">
-    <input type="text" id="searchInput" placeholder="Buscar collar, aretes, pulsera…" oninput="filtrarProductos()"/>
-    <button onclick="filtrarProductos()">BUSCAR</button>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Buscar collar, aretes, pulsera…"
+           oninput="debounceSearch()" onkeydown="if(event.key==='Enter')buscar()"/>
+    <button onclick="buscar()">BUSCAR</button>
   </div>
 </div>
 
-<!-- Categorías -->
-<div class="cats" id="catFilters">
-  <button class="cat-pill active" data-cat="Todos" onclick="selectCat(this,'Todos')">Todos</button>
-</div>
+<div class="cats" id="catFilters"></div>
 
-<!-- Productos -->
 <div class="products-section">
-  <div class="section-title">Nuestros Productos</div>
-  <div class="grid" id="productGrid"></div>
+  <div class="section-title">
+    Nuestros Productos
+    <span class="prod-count" id="prodCount"></span>
+  </div>
+  <div class="grid" id="productGrid">
+    <div class="no-results">Cargando productos…</div>
+  </div>
 </div>
 
-<!-- Carrito overlay -->
+<!-- Carrito -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="cart-header">
@@ -345,21 +207,20 @@
       <button class="close-btn" style="color:var(--mid)" onclick="closeCheckout()">✕</button>
     </div>
     <div class="modal-body">
-      <!-- Resumen -->
+      <div class="api-error" id="apiError"></div>
       <div class="order-summary" id="orderSummary"></div>
 
-      <!-- Cliente existente o nuevo -->
       <div class="form-group">
         <label>¿Eres cliente registrado?</label>
         <select id="clienteSelect" onchange="onClienteChange()">
-          <option value="">— Selecciona o crea nuevo —</option>
+          <option value="">— Selecciona o escribe nuevo —</option>
         </select>
       </div>
 
       <div id="nuevoClienteForm">
         <div class="form-group">
           <label>Nombre completo *</label>
-          <input type="text" id="fNombre" placeholder="Tu nombre"/>
+          <input type="text" id="fNombre" placeholder="Tu nombre completo"/>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="form-group">
@@ -383,7 +244,7 @@
 
       <div class="form-group">
         <label>Notas del pedido (opcional)</label>
-        <textarea id="fNotas" placeholder="Ej: pago por transferencia, regalo…"></textarea>
+        <textarea id="fNotas" placeholder="Ej: pago por transferencia, regalo, entrega a domicilio…"></textarea>
       </div>
 
       <button class="submit-btn" id="submitBtn" onclick="enviarPedido()">CONFIRMAR PEDIDO</button>
@@ -394,143 +255,176 @@
 <!-- Modal Factura -->
 <div class="modal-overlay" id="invoiceModal">
   <div class="modal">
-    <div class="modal-head" style="border:none;padding-bottom:0">
-      <span></span>
+    <div style="display:flex;justify-content:flex-end;padding:12px 16px 0">
       <button class="close-btn" style="color:var(--mid)" onclick="closeInvoice()">✕</button>
     </div>
-    <div class="invoice" id="invoiceContent"></div>
+    <div id="invoiceContent"></div>
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Config ──
-// Cambia esta URL a tu dominio de Railway cuando lo despliegues
-// Ejemplo: const API = "https://tu-app.up.railway.app"
-const API = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:5000"
-  : window.location.origin;  // En Railway, el HTML se sirve desde el mismo servidor
+// ── Config API ──────────────────────────────────────────────────────────────
+// En Railway el HTML se sirve desde el mismo servidor Flask → usamos ruta relativa
+const API = "";   // vacío = mismo origen. Cambia a "https://tu-app.up.railway.app" si sirves el HTML desde otro lado
 
-// ── Estado global ──
-let productos   = [];
-let carrito     = [];   // [{producto, cantidad}]
-let clientes    = [];
-let catActual   = "Todos";
+// ── Estado ──────────────────────────────────────────────────────────────────
+let todosLosProductos = [];
+let productosFiltrados = [];
+let carrito = [];        // [{producto, cantidad}]
+let clientes = [];
+let catActual = "Todos";
+let searchTimer = null;
 
-// ── Helpers ──
+// ── Utilidades ───────────────────────────────────────────────────────────────
 const fmt = n => new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",minimumFractionDigits:0}).format(n);
 
-function toast(msg, type="ok") {
+function showToast(msg, type="ok") {
   const el = document.getElementById("toast");
-  el.textContent = msg; el.className = "toast show" + (type==="error"?" error":"");
-  setTimeout(() => el.className = "toast", 3000);
+  el.textContent = msg;
+  el.className = "toast show" + (type==="error" ? " error" : "");
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => el.className = "toast", 3200);
+}
+
+function showApiError(msg) {
+  const el = document.getElementById("apiError");
+  el.textContent = "⚠️ " + msg;
+  el.classList.add("show");
+}
+function clearApiError() {
+  document.getElementById("apiError").classList.remove("show");
 }
 
 function emoji(nombre) {
-  const n = nombre.toLowerCase();
-  if (n.includes("collar") || n.includes("cadena") || n.includes("choker")) return "📿";
-  if (n.includes("aret") || n.includes("chandelier")) return "💎";
-  if (n.includes("pulsera") || n.includes("tobillera")) return "💍";
+  const n = (nombre||"").toLowerCase();
+  if (n.includes("collar")||n.includes("cadena")||n.includes("choker")) return "📿";
+  if (n.includes("aret")||n.includes("chandelier")) return "💎";
+  if (n.includes("pulsera")||n.includes("tobillera")) return "💍";
   if (n.includes("anillo")) return "💍";
   if (n.includes("dije")) return "✨";
   if (n.includes("set")) return "🎁";
   return "✦";
 }
 
-// ── Carga inicial ──
+// ── Inicialización ───────────────────────────────────────────────────────────
 async function init() {
-  await Promise.all([cargarProductos(), cargarClientes()]);
-  document.getElementById("loader").style.display = "none";
+  try {
+    await Promise.all([cargarProductos(), cargarClientes()]);
+  } finally {
+    document.getElementById("loader").style.display = "none";
+  }
 }
 
 async function cargarProductos() {
   try {
     const r = await fetch(`${API}/api/productos`);
-    productos = await r.json();
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    todosLosProductos = await r.json();
     renderCats();
-    renderProductos(productos);
+    aplicarFiltros();
   } catch(e) {
     document.getElementById("productGrid").innerHTML =
-      `<div class="no-results">⚠️ No se pudo conectar al servidor.<br><small>${API}/api/productos</small></div>`;
-    document.getElementById("loader").style.display = "none";
+      `<div class="no-results">⚠️ No se pudo conectar al servidor.<br><small>Revisa que la API esté corriendo.</small></div>`;
+    const b = document.getElementById("errBanner");
+    b.textContent = "⚠️ Error conectando con el servidor: " + e.message;
+    b.classList.add("show");
   }
 }
 
 async function cargarClientes() {
   try {
     const r = await fetch(`${API}/api/clientes`);
+    if (!r.ok) return;
     clientes = await r.json();
     const sel = document.getElementById("clienteSelect");
     clientes.forEach(c => {
       const opt = document.createElement("option");
-      opt.value = c.id; opt.textContent = `${c.nombre}${c.documento ? " · "+c.documento:""}`;
+      opt.value = c.id;
+      opt.textContent = `${c.nombre}${c.documento ? " · "+c.documento : ""}`;
       sel.appendChild(opt);
     });
-    const optNuevo = document.createElement("option");
-    optNuevo.value = "nuevo"; optNuevo.textContent = "➕ Registrar como nuevo cliente";
-    sel.appendChild(optNuevo);
-  } catch(e) {}
+    const optN = document.createElement("option");
+    optN.value = "nuevo"; optN.textContent = "➕ Registrarme como nuevo cliente";
+    sel.appendChild(optN);
+  } catch(e) { /* silencioso */ }
 }
 
-// ── Categorías ──
+// ── Categorías ───────────────────────────────────────────────────────────────
 function renderCats() {
-  const cats = ["Todos", ...new Set(productos.map(p => p.categoria_nombre || "General"))];
+  const cats = ["Todos", ...new Set(todosLosProductos.map(p => p.categoria_nombre || "General"))];
   const container = document.getElementById("catFilters");
   container.innerHTML = "";
   cats.forEach(cat => {
     const btn = document.createElement("button");
     btn.className = "cat-pill" + (cat === catActual ? " active" : "");
-    btn.dataset.cat = cat;
     btn.textContent = cat;
-    btn.onclick = () => selectCat(btn, cat);
+    btn.onclick = () => { catActual = cat; document.querySelectorAll(".cat-pill").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); aplicarFiltros(); };
     container.appendChild(btn);
   });
 }
 
-function selectCat(btn, cat) {
-  catActual = cat;
-  document.querySelectorAll(".cat-pill").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  filtrarProductos();
+// ── Búsqueda y filtros ───────────────────────────────────────────────────────
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(aplicarFiltros, 300);
 }
 
-// ── Filtrar ──
-function filtrarProductos() {
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  let lista = productos;
-  if (catActual !== "Todos") lista = lista.filter(p => (p.categoria_nombre||"General") === catActual);
-  if (q) lista = lista.filter(p => p.nombre.toLowerCase().includes(q) || (p.codigo||"").toLowerCase().includes(q));
+function buscar() {
+  clearTimeout(searchTimer);
+  aplicarFiltros();
+}
+
+function aplicarFiltros() {
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  let lista = todosLosProductos;
+
+  if (catActual !== "Todos") {
+    lista = lista.filter(p => (p.categoria_nombre || "General") === catActual);
+  }
+  if (q) {
+    lista = lista.filter(p =>
+      (p.nombre||"").toLowerCase().includes(q) ||
+      (p.codigo||"").toLowerCase().includes(q) ||
+      (p.descripcion||"").toLowerCase().includes(q) ||
+      (p.categoria_nombre||"").toLowerCase().includes(q)
+    );
+  }
+  productosFiltrados = lista;
   renderProductos(lista);
 }
 
-// ── Render productos ──
+// ── Render ───────────────────────────────────────────────────────────────────
 function renderProductos(lista) {
   const grid = document.getElementById("productGrid");
+  const count = document.getElementById("prodCount");
+  count.textContent = lista.length + " producto" + (lista.length !== 1 ? "s" : "");
+
   if (!lista.length) {
-    grid.innerHTML = `<div class="no-results" style="grid-column:1/-1">💎 No encontramos productos con ese criterio.</div>`;
+    grid.innerHTML = `<div class="no-results">💎 No encontramos productos con ese criterio.</div>`;
     return;
   }
   grid.innerHTML = lista.map(p => {
-    const stockBadge = p.stock <= p.stock_minimo
-      ? `<span class="badge-stock badge-low">¡Últimas ${p.stock}!</span>`
-      : `<span class="badge-stock">${p.stock} disp.</span>`;
+    const enCarrito = carrito.find(i => i.producto.id === p.id);
+    const agotado = p.stock === 0;
+    const stockBadge = agotado
+      ? `<span class="badge-stock badge-low">Agotado</span>`
+      : p.stock <= (p.stock_minimo || 5)
+        ? `<span class="badge-stock badge-low">¡Últimas ${p.stock}!</span>`
+        : `<span class="badge-stock">${p.stock} disp.</span>`;
+    const btnLabel = agotado ? "Agotado" : enCarrito ? `En carrito (${enCarrito.cantidad})` : "+ Agregar";
     return `
-    <div class="card" onclick="agregarAlCarrito(${p.id})">
-      <div class="card-img">
-        ${emoji(p.nombre)}
-        ${stockBadge}
-      </div>
+    <div class="card">
+      <div class="card-img">${emoji(p.nombre)}${stockBadge}</div>
       <div class="card-body">
         <div class="card-cat">${p.categoria_nombre || "General"}</div>
         <div class="card-name">${p.nombre}</div>
         <div class="card-code">${p.codigo}</div>
         <div class="card-footer">
           <span class="price">${fmt(p.precio_venta)}</span>
-          <button class="add-btn" onclick="event.stopPropagation();agregarAlCarrito(${p.id})"
-            ${p.stock === 0 ? "disabled" : ""}>
-            ${p.stock === 0 ? "Agotado" : "+ Agregar"}
+          <button class="add-btn" onclick="agregarAlCarrito(${p.id})" ${agotado?"disabled":""}>
+            ${btnLabel}
           </button>
         </div>
       </div>
@@ -538,19 +432,21 @@ function renderProductos(lista) {
   }).join("");
 }
 
-// ── Carrito ──
+// ── Carrito ───────────────────────────────────────────────────────────────────
 function agregarAlCarrito(id) {
-  const p = productos.find(x => x.id === id);
+  const p = todosLosProductos.find(x => x.id === id);
   if (!p || p.stock === 0) return;
   const existe = carrito.find(x => x.producto.id === id);
   if (existe) {
-    if (existe.cantidad >= p.stock) { toast("No hay más stock disponible ⚠️","error"); return; }
+    if (existe.cantidad >= p.stock) { showToast("No hay más stock disponible ⚠️","error"); return; }
     existe.cantidad++;
   } else {
     carrito.push({producto: p, cantidad: 1});
   }
   actualizarCarrito();
-  toast(`✦ ${p.nombre} añadido`);
+  showToast(`✦ ${p.nombre} añadido al carrito`);
+  // Redibujar tarjetas para actualizar label del botón
+  renderProductos(productosFiltrados.length ? productosFiltrados : todosLosProductos);
 }
 
 function cambiarQty(id, delta) {
@@ -559,23 +455,21 @@ function cambiarQty(id, delta) {
   item.cantidad += delta;
   if (item.cantidad <= 0) carrito = carrito.filter(x => x.producto.id !== id);
   actualizarCarrito();
+  renderProductos(productosFiltrados.length ? productosFiltrados : todosLosProductos);
 }
 
 function actualizarCarrito() {
-  const total = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
-  document.getElementById("cartCount").textContent = carrito.reduce((s,i)=>s+i.cantidad,0);
+  const totalUnidades = carrito.reduce((s,i) => s+i.cantidad, 0);
+  const totalPrecio   = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
+  document.getElementById("cartCount").textContent = totalUnidades;
+  document.getElementById("cartFooter").style.display = carrito.length ? "block" : "none";
+  if (carrito.length) document.getElementById("cartTotal").textContent = fmt(totalPrecio);
 
   const container = document.getElementById("cartItems");
-  const footer    = document.getElementById("cartFooter");
-
   if (!carrito.length) {
     container.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p>Tu carrito está vacío</p></div>`;
-    footer.style.display = "none";
     return;
   }
-  footer.style.display = "block";
-  document.getElementById("cartTotal").textContent = fmt(total);
-
   container.innerHTML = carrito.map(i => `
     <div class="cart-item">
       <div>
@@ -589,10 +483,9 @@ function actualizarCarrito() {
       </div>
       <div style="text-align:right">
         <div class="ci-price">${fmt(i.producto.precio_venta * i.cantidad)}</div>
-        <button class="ci-remove" onclick="cambiarQty(${i.producto.id},-99)" title="Eliminar">✕</button>
+        <button class="ci-remove" onclick="carrito=carrito.filter(x=>x.producto.id!==${i.producto.id});actualizarCarrito();renderProductos(productosFiltrados.length?productosFiltrados:todosLosProductos);">✕</button>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
 
 function toggleCart() {
@@ -600,40 +493,30 @@ function toggleCart() {
   document.getElementById("cartPanel").classList.toggle("open");
 }
 
-// ── Checkout ──
+// ── Checkout ──────────────────────────────────────────────────────────────────
 function openCheckout() {
-  if (!carrito.length) { toast("El carrito está vacío","error"); return; }
+  if (!carrito.length) { showToast("El carrito está vacío","error"); return; }
   toggleCart();
-  renderOrderSummary();
+  clearApiError();
+  const subtotal = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
+  document.getElementById("orderSummary").innerHTML = `
+    <h3>Resumen del pedido</h3>
+    ${carrito.map(i=>`<div class="sum-item"><span>${i.producto.nombre} × ${i.cantidad}</span><span>${fmt(i.producto.precio_venta*i.cantidad)}</span></div>`).join("")}
+    <div class="sum-total"><span>Total</span><span>${fmt(subtotal)}</span></div>`;
   document.getElementById("checkoutModal").classList.add("open");
 }
-function closeCheckout() {
-  document.getElementById("checkoutModal").classList.remove("open");
-}
 
-function renderOrderSummary() {
-  const subtotal = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
-  const html = `
-    <h3>Resumen del pedido</h3>
-    ${carrito.map(i => `
-      <div class="sum-item">
-        <span>${i.producto.nombre} × ${i.cantidad}</span>
-        <span>${fmt(i.producto.precio_venta * i.cantidad)}</span>
-      </div>`).join("")}
-    <div class="sum-total"><span>Total</span><span>${fmt(subtotal)}</span></div>`;
-  document.getElementById("orderSummary").innerHTML = html;
-}
+function closeCheckout() { document.getElementById("checkoutModal").classList.remove("open"); }
 
 function onClienteChange() {
   const val = document.getElementById("clienteSelect").value;
-  document.getElementById("nuevoClienteForm").style.display =
-    (val === "" || val === "nuevo") ? "block" : "none";
+  document.getElementById("nuevoClienteForm").style.display = (val===""||val==="nuevo") ? "block" : "none";
 }
 
 async function enviarPedido() {
-  const btn  = document.getElementById("submitBtn");
-  const sel  = document.getElementById("clienteSelect");
-  const val  = sel.value;
+  clearApiError();
+  const btn = document.getElementById("submitBtn");
+  const val = document.getElementById("clienteSelect").value;
   btn.disabled = true; btn.textContent = "Procesando…";
 
   try {
@@ -642,9 +525,8 @@ async function enviarPedido() {
     if (val && val !== "nuevo") {
       cliente_id = parseInt(val);
     } else {
-      // Crear nuevo cliente
       const nombre = document.getElementById("fNombre").value.trim();
-      if (!nombre) { toast("Escribe tu nombre para continuar","error"); btn.disabled=false; btn.textContent="CONFIRMAR PEDIDO"; return; }
+      if (!nombre) { showApiError("Escribe tu nombre para continuar."); btn.disabled=false; btn.textContent="CONFIRMAR PEDIDO"; return; }
       const res = await fetch(`${API}/api/clientes`, {
         method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify({
@@ -656,50 +538,48 @@ async function enviarPedido() {
         })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al crear cliente");
+      if (!res.ok) throw new Error(data.error || "Error al registrar cliente");
       cliente_id = data.id;
     }
 
-    // Crear pedido
     const items = carrito.map(i => ({
-      producto_id:    i.producto.id,
-      cantidad:       i.cantidad,
+      producto_id:     i.producto.id,
+      cantidad:        i.cantidad,
       precio_unitario: i.producto.precio_venta,
       costo_unitario:  i.producto.costo || 0,
     }));
 
     const pedRes = await fetch(`${API}/api/pedidos`, {
       method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        cliente_id, items,
-        descuento: 0,
-        notas: document.getElementById("fNotas").value,
-      })
+      body: JSON.stringify({ cliente_id, items, descuento: 0, notas: document.getElementById("fNotas").value })
     });
     const pedData = await pedRes.json();
     if (!pedRes.ok) throw new Error(pedData.error || "Error al crear pedido");
 
+    // Éxito
     closeCheckout();
     carrito = [];
     actualizarCarrito();
-    await cargarProductos(); // refrescar stock
+    await cargarProductos();   // refresca stock en toda la tienda
     mostrarFactura(pedData);
+    showToast("✅ Pedido registrado: " + pedData.numero_factura);
 
   } catch(e) {
-    toast(e.message, "error");
+    showApiError(e.message);
   } finally {
     btn.disabled = false; btn.textContent = "CONFIRMAR PEDIDO";
   }
 }
 
-// ── Factura ──
+// ── Factura ───────────────────────────────────────────────────────────────────
 function mostrarFactura(data) {
   const {numero_factura, pedido, items} = data;
   const fecha = new Date().toLocaleDateString("es-CO",{day:"2-digit",month:"long",year:"numeric"});
+  const estadoClass = `estado-${pedido.estado || "pendiente"}`;
 
   const rows = items.map(i => `
     <tr>
-      <td>${i.producto_nombre || i.codigo}</td>
+      <td>${i.producto_nombre || i.codigo || "—"}</td>
       <td style="text-align:center">${i.cantidad}</td>
       <td style="text-align:right">${fmt(i.precio_unitario)}</td>
       <td style="text-align:right">${fmt(i.subtotal)}</td>
@@ -712,55 +592,36 @@ function mostrarFactura(data) {
     </div>
     <div class="inv-body">
       <div class="inv-meta">
-        <div class="inv-meta-box">
-          <div class="lbl">FACTURA N°</div>
-          <div class="val">${numero_factura}</div>
-        </div>
-        <div class="inv-meta-box">
-          <div class="lbl">FECHA</div>
-          <div class="val">${fecha}</div>
-        </div>
-        <div class="inv-meta-box">
-          <div class="lbl">CLIENTE</div>
-          <div class="val">${pedido.cliente_nombre || "—"}</div>
-        </div>
+        <div class="inv-meta-box"><div class="lbl">FACTURA N°</div><div class="val">${numero_factura}</div></div>
+        <div class="inv-meta-box"><div class="lbl">FECHA</div><div class="val">${fecha}</div></div>
+        <div class="inv-meta-box"><div class="lbl">CLIENTE</div><div class="val">${pedido.cliente_nombre || "—"}</div></div>
         <div class="inv-meta-box">
           <div class="lbl">ESTADO</div>
-          <div class="val" style="color:var(--gold);text-transform:uppercase;font-size:.8rem;letter-spacing:.06em">${pedido.estado}</div>
+          <div class="val"><span class="inv-estado ${estadoClass}">${pedido.estado || "pendiente"}</span></div>
         </div>
       </div>
-
       <table class="inv-table">
-        <thead>
-          <tr>
-            <th>PRODUCTO</th><th style="text-align:center">CANT</th>
-            <th style="text-align:right">PRECIO</th><th style="text-align:right">SUBTOTAL</th>
-          </tr>
-        </thead>
+        <thead><tr><th>PRODUCTO</th><th style="text-align:center">CANT</th><th style="text-align:right">PRECIO</th><th style="text-align:right">SUBTOTAL</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
-
       <div class="inv-totals">
         <div class="row"><span>Subtotal</span><span>${fmt(pedido.subtotal)}</span></div>
-        ${pedido.descuento > 0 ? `<div class="row"><span>Descuento</span><span>−${fmt(pedido.descuento)}</span></div>`:""}
+        ${pedido.descuento > 0 ? `<div class="row"><span>Descuento</span><span>−${fmt(pedido.descuento)}</span></div>` : ""}
         <div class="grand"><span>TOTAL</span><span>${fmt(pedido.total)}</span></div>
       </div>
     </div>
     <div class="inv-footer">
-      ¡Gracias por tu compra! · Tu pedido ha sido registrado exitosamente.<br>
-      Grupo 3 · Jesús González · Marlón Gélvez · Sebastián Velandia
+      ¡Gracias por tu compra! · Tu pedido ha sido registrado y está siendo procesado.<br>
+      Jesús González · Marlón Gélvez · Sebastián Velandia · Grupo 3
     </div>
     <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
   `;
-
   document.getElementById("invoiceModal").classList.add("open");
 }
 
-function closeInvoice() {
-  document.getElementById("invoiceModal").classList.remove("open");
-}
+function closeInvoice() { document.getElementById("invoiceModal").classList.remove("open"); }
 
-// ── Start ──
+// ── Start ─────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>

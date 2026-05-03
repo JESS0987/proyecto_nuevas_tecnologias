@@ -1,105 +1,105 @@
 """
-API REST - Tienda de Bisutería
-Conecta el frontend (index.html) con la base de datos SQLite existente.
-Despliega en Railway: configura DATABASE_PATH como variable de entorno si es necesario.
+API REST - Tienda de Bisutería · Glamour
+Detecta automáticamente si está en la raíz del repo o dentro de inventario-mvc/
 """
 
+import os, sys
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
-import sys, os
 
-# Asegurarse de que el módulo app sea encontrado
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "inventario-mvc"))
+# ── Detección automática de rutas ──────────────────────────────────────────
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+if os.path.isdir(os.path.join(BASE, "app")):
+    PROJECT_DIR = BASE
+elif os.path.isdir(os.path.join(BASE, "inventario-mvc", "app")):
+    PROJECT_DIR = os.path.join(BASE, "inventario-mvc")
+else:
+    for root, dirs, files in os.walk(BASE):
+        if "app" in dirs and os.path.isfile(os.path.join(root, "app", "Models", "database.py")):
+            PROJECT_DIR = root
+            break
+    else:
+        PROJECT_DIR = BASE
+
+sys.path.insert(0, PROJECT_DIR)
+os.chdir(PROJECT_DIR)
+print(f"[API] PROJECT_DIR = {PROJECT_DIR}")
 
 from app.Models.database import Database
 from app.Models.producto_model import ProductoModel
 from app.Models.pedido_model import PedidoModel
 
 app = Flask(__name__)
-CORS(app)  # Permite peticiones desde el frontend HTML
-
-# Inicializar DB al arrancar
+CORS(app)
 Database.initialize()
 
-# ──────────────────────────────────────────────────────────────────────────────
-# PRODUCTOS
-# ──────────────────────────────────────────────────────────────────────────────
+# ── FRONTEND ───────────────────────────────────────────────────────────────
+
+@app.route("/", methods=["GET"])
+def index():
+    for folder in [BASE, PROJECT_DIR]:
+        if os.path.isfile(os.path.join(folder, "index.html")):
+            return send_from_directory(folder, "index.html")
+    return "<h1>index.html no encontrado</h1>", 404
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok", "project_dir": PROJECT_DIR})
+
+# ── PRODUCTOS ──────────────────────────────────────────────────────────────
 
 @app.route("/api/productos", methods=["GET"])
 def listar_productos():
-    """Devuelve todos los productos activos con stock > 0."""
     termino = request.args.get("q", "").strip()
-    if termino:
-        rows = ProductoModel.buscar(termino)
-    else:
-        rows = ProductoModel.obtener_todos(solo_activos=True)
-
-    productos = []
-    for r in rows:
-        p = dict(r)
-        if p.get("stock", 0) > 0:
-            productos.append(p)
-    return jsonify(productos)
-
+    try:
+        rows = ProductoModel.buscar(termino) if termino else ProductoModel.obtener_todos(solo_activos=True)
+        return jsonify([dict(r) for r in rows])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/productos/<int:pid>", methods=["GET"])
 def detalle_producto(pid):
-    row = ProductoModel.obtener_por_id(pid)
-    if not row:
-        return jsonify({"error": "Producto no encontrado"}), 404
-    return jsonify(dict(row))
+    try:
+        row = ProductoModel.obtener_por_id(pid)
+        if not row:
+            return jsonify({"error": "No encontrado"}), 404
+        return jsonify(dict(row))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# CLIENTES
-# ──────────────────────────────────────────────────────────────────────────────
+# ── CLIENTES ───────────────────────────────────────────────────────────────
 
 @app.route("/api/clientes", methods=["GET"])
 def listar_clientes():
-    rows = PedidoModel.obtener_clientes()
-    return jsonify([dict(r) for r in rows])
-
+    try:
+        return jsonify([dict(r) for r in PedidoModel.obtener_clientes()])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/clientes", methods=["POST"])
 def crear_cliente():
     data = request.get_json(force=True)
-    nombre    = data.get("nombre", "").strip()
-    documento = data.get("documento", "")
-    telefono  = data.get("telefono", "")
-    email     = data.get("email", "")
-    direccion = data.get("direccion", "")
-
+    nombre = data.get("nombre", "").strip()
     if not nombre:
         return jsonify({"error": "El nombre es requerido"}), 400
-
     try:
-        cliente_id = PedidoModel.crear_cliente(
-            nombre, documento, telefono, email, direccion
+        cid = PedidoModel.crear_cliente(
+            nombre,
+            data.get("documento",""),
+            data.get("telefono",""),
+            data.get("email",""),
+            data.get("direccion",""),
         )
-        return jsonify({"id": cliente_id, "nombre": nombre}), 201
+        return jsonify({"id": cid, "nombre": nombre}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# PEDIDOS / FACTURAS
-# ──────────────────────────────────────────────────────────────────────────────
+# ── PEDIDOS ────────────────────────────────────────────────────────────────
 
 @app.route("/api/pedidos", methods=["POST"])
 def crear_pedido():
-    """
-    Body JSON esperado:
-    {
-      "cliente_id": 1,
-      "items": [
-        { "producto_id": 3, "cantidad": 2, "precio_unitario": 10000, "costo_unitario": 4000 }
-      ],
-      "descuento": 0,
-      "notas": ""
-    }
-    """
-    data = request.get_json(force=True)
-
+    data       = request.get_json(force=True)
     cliente_id = data.get("cliente_id")
     items      = data.get("items", [])
     descuento  = float(data.get("descuento", 0))
@@ -110,67 +110,57 @@ def crear_pedido():
     if not items:
         return jsonify({"error": "El pedido debe tener al menos un ítem"}), 400
 
-    # Validar stock antes de procesar
     for item in items:
         prod = ProductoModel.obtener_por_id(item["producto_id"])
         if not prod:
             return jsonify({"error": f"Producto {item['producto_id']} no existe"}), 400
         if prod["stock"] < item["cantidad"]:
-            return jsonify({
-                "error": f"Stock insuficiente para '{prod['nombre']}'. "
-                         f"Disponible: {prod['stock']}, solicitado: {item['cantidad']}"
-            }), 400
+            return jsonify({"error": f"Stock insuficiente para '{prod['nombre']}'. Disponible: {prod['stock']}"}), 400
 
     try:
         numero_factura = PedidoModel.crear_pedido(
-            cliente_id=cliente_id,
-            items=items,
-            descuento=descuento,
-            notas=notas,
-            estado="pendiente",
+            cliente_id=cliente_id, items=items,
+            descuento=descuento, notas=notas, estado="pendiente",
         )
-        # Recuperar pedido completo para devolverlo
         pedido, items_det = PedidoModel.obtener_por_numero(numero_factura)
         return jsonify({
             "numero_factura": numero_factura,
             "pedido": dict(pedido) if pedido else {},
-            "items": [dict(i) for i in items_det],
+            "items":  [dict(i) for i in items_det],
         }), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-@app.route("/api/pedidos/<string:num_factura>", methods=["GET"])
-def detalle_pedido(num_factura):
-    pedido, items = PedidoModel.obtener_por_numero(num_factura)
-    if not pedido:
-        return jsonify({"error": "Factura no encontrada"}), 404
-    return jsonify({
-        "pedido": dict(pedido),
-        "items": [dict(i) for i in items],
-    })
-
-
 @app.route("/api/pedidos", methods=["GET"])
 def listar_pedidos():
-    rows = PedidoModel.obtener_todos(limite=100)
-    return jsonify([dict(r) for r in rows])
+    try:
+        return jsonify([dict(r) for r in PedidoModel.obtener_todos(limite=100)])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+@app.route("/api/pedidos/<string:num>", methods=["GET"])
+def detalle_pedido(num):
+    try:
+        pedido, items = PedidoModel.obtener_por_numero(num)
+        if not pedido:
+            return jsonify({"error": "Factura no encontrada"}), 404
+        return jsonify({"pedido": dict(pedido), "items": [dict(i) for i in items]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-# ──────────────────────────────────────────────────────────────────────────────
-# FRONTEND — sirve index.html y archivos estáticos
-# ──────────────────────────────────────────────────────────────────────────────
+@app.route("/api/pedidos/<int:pid>/estado", methods=["PATCH"])
+def actualizar_estado(pid):
+    data   = request.get_json(force=True)
+    estado = data.get("estado", "").strip()
+    if estado not in {"pendiente","despachado","cancelado"}:
+        return jsonify({"error": "Estado inválido"}), 400
+    try:
+        PedidoModel.actualizar_estado(pid, estado)
+        return jsonify({"ok": True, "estado": estado})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-@app.route("/", methods=["GET"])
-def index():
-    """Sirve el frontend de la tienda."""
-    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), "index.html")
-
-
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "ok", "app": "Bisutería Inventario API"})
-
+# ── MAIN ───────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
