@@ -9,7 +9,7 @@ from flask_cors import CORS
 import sys, os
 
 # Asegurarse de que el módulo app sea encontrado
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "inventario-mvc"))
 
 from app.Models.database import Database
 from app.Models.producto_model import ProductoModel
