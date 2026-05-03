@@ -1,140 +1,106 @@
 """
-Controller: Pedidos / Ventas
-Lógica de negocio para el módulo de ventas y facturación.
+Controller: Pedido
+Ahora delega todas las operaciones a la API de Railway (api_client.py).
 """
 
-from app.Models.pedido_model import PedidoModel
-from app.Models.producto_model import ProductoModel
-
-ESTADOS_VALIDOS = ("pendiente", "despachado", "cancelado")
+import datetime
+import api_client as api
 
 
 class PedidoController:
 
-    # ------------------------------------------------------------------ #
-    #  Crear pedido                                                        #
-    # ------------------------------------------------------------------ #
+    @staticmethod
+    def listar_pedidos():
+        return api.listar_pedidos()
 
     @staticmethod
-    def crear_pedido(cliente_id, items_vista, descuento=0, notas="", estado="pendiente"):
-        """
-        items_vista: lista de dicts con:
-            producto_id, cantidad, precio_unitario
-        estado: estado inicial del pedido ('pendiente' por defecto)
-        """
-        if not items_vista:
-            raise ValueError("Debe agregar al menos un producto al pedido.")
-
-        if estado not in ESTADOS_VALIDOS:
-            raise ValueError(f"Estado inválido: '{estado}'. Use: {', '.join(ESTADOS_VALIDOS)}.")
-
-        items_model = []
-        for item in items_vista:
-            producto = ProductoModel.obtener_por_id(item["producto_id"])
-            if not producto:
-                raise ValueError(f"Producto ID {item['producto_id']} no encontrado.")
-            if producto["stock"] < item["cantidad"]:
-                raise ValueError(
-                    f"Stock insuficiente para '{producto['nombre']}'. "
-                    f"Disponible: {producto['stock']}, solicitado: {item['cantidad']}."
-                )
-            items_model.append({
-                "producto_id":     item["producto_id"],
-                "cantidad":        item["cantidad"],
-                "precio_unitario": item["precio_unitario"],
-                "costo_unitario":  producto["costo"],
-            })
-
-        numero_factura = PedidoModel.crear_pedido(
-            cliente_id, items_model, descuento, notas, estado
-        )
-        return numero_factura
-
-    # ------------------------------------------------------------------ #
-    #  Cambiar estado                                                      #
-    # ------------------------------------------------------------------ #
-
-    @staticmethod
-    def cambiar_estado(pedido_id, nuevo_estado):
-        """
-        Cambia el estado de un pedido existente.
-        nuevo_estado: 'pendiente' | 'despachado' | 'cancelado'
-        """
-        if nuevo_estado not in ESTADOS_VALIDOS:
-            raise ValueError(
-                f"Estado inválido: '{nuevo_estado}'. "
-                f"Use: {', '.join(ESTADOS_VALIDOS)}."
-            )
-        PedidoModel.actualizar_estado(pedido_id, nuevo_estado)
-
-    # ------------------------------------------------------------------ #
-    #  Consultas                                                           #
-    # ------------------------------------------------------------------ #
-
-    @staticmethod
-    def listar_pedidos(limite=200):
-        return PedidoModel.obtener_todos(limite)
-
-    @staticmethod
-    def obtener_pedido(pedido_id):
-        return PedidoModel.obtener_por_id(pedido_id)
-
-    @staticmethod
-    def obtener_pedido_por_factura(numero):
-        return PedidoModel.obtener_por_numero(numero)
-
-    # ------------------------------------------------------------------ #
-    #  Clientes                                                            #
-    # ------------------------------------------------------------------ #
+    def obtener_pedido(pedido_id: int):
+        return api.obtener_pedido_por_id(pedido_id)
 
     @staticmethod
     def listar_clientes():
-        return PedidoModel.obtener_clientes()
+        return api.listar_clientes()
 
     @staticmethod
     def crear_cliente(nombre, documento="", telefono="", email="", direccion=""):
-        if not nombre.strip():
-            raise ValueError("El nombre del cliente es obligatorio.")
-        return PedidoModel.crear_cliente(
-            nombre.strip(), documento, telefono, email, direccion
-        )
-
-    # ------------------------------------------------------------------ #
-    #  Factura en texto                                                    #
-    # ------------------------------------------------------------------ #
+        return api.crear_cliente(nombre, documento, telefono, email, direccion)
 
     @staticmethod
-    def generar_texto_factura(numero_factura):
-        pedido, items = PedidoModel.obtener_por_numero(numero_factura)
+    def crear_pedido(cliente_id, items, descuento=0, notas="", estado="pendiente"):
+        """
+        items: lista de dicts con keys:
+            producto_id, codigo, nombre, cantidad, precio_unitario
+        """
+        from app.Models.producto_model import ProductoModel
+
+        # Enriquecer items con costo_unitario (viene del producto)
+        items_api = []
+        for item in items:
+            prod = api.obtener_producto(item["producto_id"])
+            items_api.append({
+                "producto_id":     item["producto_id"],
+                "cantidad":        item["cantidad"],
+                "precio_unitario": item["precio_unitario"],
+                "costo_unitario":  prod.get("costo", 0) if prod else 0,
+            })
+
+        return api.crear_pedido(
+            cliente_id=cliente_id,
+            items=items_api,
+            descuento=descuento,
+            notas=notas,
+            estado=estado,
+        )
+
+    @staticmethod
+    def cambiar_estado(pedido_id: int, nuevo_estado: str):
+        estados_validos = {"pendiente", "despachado", "cancelado"}
+        if nuevo_estado not in estados_validos:
+            raise ValueError(f"Estado inválido: {nuevo_estado}")
+        api.actualizar_estado(pedido_id, nuevo_estado)
+
+    @staticmethod
+    def generar_texto_factura(numero_factura: str) -> str:
+        pedido, items = api.obtener_pedido_por_numero(numero_factura)
         if not pedido:
             return "Factura no encontrada."
 
         lineas = [
             "=" * 48,
-            "       SISTEMA DE INVENTARIO Y RENTABILIDAD",
+            "        ✦ GLAMOUR BISUTERÍA",
+            "     Bucaramanga, Santander · Colombia",
             "=" * 48,
-            f"  Factura N°: {pedido['numero_factura']}",
-            f"  Fecha:      {pedido['fecha']}",
-            f"  Cliente:    {pedido['cliente_nombre'] or 'Consumidor Final'}",
-            f"  Estado:     {pedido['estado'].capitalize()}",
+            f"  Factura : {pedido.get('numero_factura', numero_factura)}",
+            f"  Fecha   : {str(pedido.get('fecha', ''))[:16]}",
+            f"  Cliente : {pedido.get('cliente_nombre', '—')}",
+            f"  Estado  : {pedido.get('estado', '—').upper()}",
             "-" * 48,
-            f"  {'Producto':<22} {'Cant':>4} {'P.Unit':>8} {'Total':>8}",
+            f"  {'Producto':<22} {'Cant':>4} {'P.Unit':>9} {'Sub':>9}",
             "-" * 48,
         ]
-        for item in items:
-            nombre = item["producto_nombre"][:22]
-            lineas.append(
-                f"  {nombre:<22} {item['cantidad']:>4} "
-                f"{item['precio_unitario']:>8,.0f} "
-                f"{item['subtotal']:>8,.0f}"
-            )
+
+        for i in items:
+            nombre = str(i.get("producto_nombre") or i.get("nombre") or "")[:22]
+            cant   = i.get("cantidad", 0)
+            precio = i.get("precio_unitario", 0)
+            sub    = i.get("subtotal", cant * precio)
+            lineas.append(f"  {nombre:<22} {cant:>4} {precio:>9,.0f} {sub:>9,.0f}")
+
+        subtotal  = pedido.get("subtotal", 0) or 0
+        descuento = pedido.get("descuento", 0) or 0
+        total     = pedido.get("total", subtotal - descuento)
+
         lineas += [
             "-" * 48,
-            f"  {'Subtotal':>36}: {pedido['subtotal']:>8,.0f}",
-            f"  {'Descuento':>36}: {pedido['descuento']:>8,.0f}",
-            f"  {'TOTAL':>36}: {pedido['total']:>8,.0f}",
+            f"  {'Subtotal':>36} {subtotal:>9,.0f}",
+        ]
+        if descuento:
+            lineas.append(f"  {'Descuento':>36} {descuento:>9,.0f}")
+        lineas += [
+            f"  {'TOTAL':>36} {total:>9,.0f}",
             "=" * 48,
-            "       ¡Gracias por su compra!",
+            "  ¡Gracias por tu compra!",
+            "  Jesús · Marlón · Sebastián — Grupo 3",
             "=" * 48,
         ]
         return "\n".join(lineas)

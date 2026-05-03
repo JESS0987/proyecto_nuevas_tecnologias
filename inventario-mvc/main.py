@@ -13,15 +13,11 @@ import os
 # Asegurar que el directorio raíz esté en el path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from app.Models.database import Database
 from app.Views.main_window import MainWindow
 from config.settings import APP_NAME
 
 
 def main():
-    # Inicializar base de datos
-    Database.initialize()
-
     # Crear ventana principal
     root = tk.Tk()
     app  = MainWindow(root)

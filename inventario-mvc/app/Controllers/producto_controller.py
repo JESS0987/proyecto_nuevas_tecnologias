@@ -1,145 +1,72 @@
 """
-Controller: Productos
-Lógica de negocio para el módulo de inventario.
+Controller: Producto
+Ahora delega todas las operaciones a la API de Railway (api_client.py).
 """
 
-from app.Models.producto_model import ProductoModel
-from config.settings import DEFAULT_STOCK_MINIMO
+import api_client as api
 
 
 class ProductoController:
 
-    # ------------------------------------------------------------------ #
-    #  Listados                                                            #
-    # ------------------------------------------------------------------ #
+    @staticmethod
+    def listar_productos():
+        return api.listar_productos()
 
     @staticmethod
-    def listar_productos(solo_activos=True):
-        return ProductoModel.obtener_todos(solo_activos)
+    def buscar_productos(termino: str):
+        return api.buscar_productos(termino)
 
     @staticmethod
-    def buscar_productos(termino):
-        if not termino.strip():
-            return ProductoModel.obtener_todos()
-        return ProductoModel.buscar(termino.strip())
-
-    @staticmethod
-    def obtener_producto(producto_id):
-        return ProductoModel.obtener_por_id(producto_id)
-
-    @staticmethod
-    def obtener_por_codigo(codigo):
-        return ProductoModel.obtener_por_codigo(codigo)
-
-    @staticmethod
-    def listar_categorias():
-        return ProductoModel.obtener_categorias()
-
-    # ------------------------------------------------------------------ #
-    #  Creación / edición                                                  #
-    # ------------------------------------------------------------------ #
-
-    @staticmethod
-    def crear_producto(datos):
-        """
-        datos: dict con keys:
-            codigo, nombre, descripcion, categoria_id,
-            costo, precio_venta, stock, stock_minimo
-        """
-        errores = ProductoController._validar(datos)
-        if errores:
-            raise ValueError("\n".join(errores))
-
-        return ProductoModel.crear(
-            codigo       = datos["codigo"].strip().upper(),
-            nombre       = datos["nombre"].strip(),
-            descripcion  = datos.get("descripcion", "").strip(),
-            categoria_id = datos.get("categoria_id"),
-            costo        = float(datos["costo"]),
-            precio_venta = float(datos["precio_venta"]),
-            stock        = int(datos["stock"]),
-            stock_minimo = int(datos.get("stock_minimo", DEFAULT_STOCK_MINIMO)),
-        )
-
-    @staticmethod
-    def actualizar_producto(producto_id, datos):
-        errores = ProductoController._validar(datos, producto_id)
-        if errores:
-            raise ValueError("\n".join(errores))
-
-        ProductoModel.actualizar(
-            producto_id  = producto_id,
-            codigo       = datos["codigo"].strip().upper(),
-            nombre       = datos["nombre"].strip(),
-            descripcion  = datos.get("descripcion", "").strip(),
-            categoria_id = datos.get("categoria_id"),
-            costo        = float(datos["costo"]),
-            precio_venta = float(datos["precio_venta"]),
-            stock        = int(datos["stock"]),
-            stock_minimo = int(datos.get("stock_minimo", DEFAULT_STOCK_MINIMO)),
-        )
-
-    @staticmethod
-    def eliminar_producto(producto_id):
-        ProductoModel.eliminar(producto_id)
-
-    # ------------------------------------------------------------------ #
-    #  Entradas de inventario                                              #
-    # ------------------------------------------------------------------ #
-
-    @staticmethod
-    def registrar_entrada(producto_id, cantidad, costo_unitario,
-                          proveedor="", notas=""):
-        if cantidad <= 0:
-            raise ValueError("La cantidad debe ser mayor a 0.")
-        if costo_unitario < 0:
-            raise ValueError("El costo no puede ser negativo.")
-        ProductoModel.registrar_entrada(
-            producto_id, cantidad, costo_unitario, proveedor, notas
-        )
+    def obtener_producto(producto_id: int):
+        return api.obtener_producto(producto_id)
 
     @staticmethod
     def productos_stock_bajo():
-        return ProductoModel.con_stock_bajo()
-
-    # ------------------------------------------------------------------ #
-    #  Validación                                                          #
-    # ------------------------------------------------------------------ #
+        productos = api.listar_productos()
+        return [p for p in productos if p["stock"] <= p.get("stock_minimo", 5)]
 
     @staticmethod
-    def _validar(datos, producto_id=None):
-        errores = []
-        if not datos.get("codigo", "").strip():
-            errores.append("El código es obligatorio.")
-        if not datos.get("nombre", "").strip():
-            errores.append("El nombre es obligatorio.")
-        try:
-            costo = float(datos.get("costo", -1))
-            if costo < 0:
-                raise ValueError
-        except (ValueError, TypeError):
-            errores.append("El costo debe ser un número positivo.")
-        try:
-            pventa = float(datos.get("precio_venta", -1))
-            if pventa < 0:
-                raise ValueError
-        except (ValueError, TypeError):
-            errores.append("El precio de venta debe ser un número positivo.")
-        try:
-            stock = int(datos.get("stock", -1))
-            if stock < 0:
-                raise ValueError
-        except (ValueError, TypeError):
-            errores.append("El stock debe ser un número entero positivo.")
+    def listar_categorias():
+        """
+        Las categorías no tienen endpoint propio en la API.
+        Las extraemos de los productos existentes.
+        """
+        productos  = api.listar_productos()
+        vistas     = set()
+        categorias = []
+        for p in productos:
+            nombre = p.get("categoria_nombre") or "General"
+            cid    = p.get("categoria_id")
+            if nombre not in vistas:
+                vistas.add(nombre)
+                categorias.append({"id": cid, "nombre": nombre})
+        return sorted(categorias, key=lambda c: c["nombre"])
 
-        # Verificar código duplicado
-        if not errores and datos.get("codigo"):
-            existente = ProductoModel.obtener_por_codigo(
-                datos["codigo"].strip().upper()
-            )
-            if existente and existente["id"] != producto_id:
-                errores.append(
-                    f"Ya existe un producto con el código "
-                    f"'{datos['codigo'].upper()}'."
-                )
-        return errores
+    @staticmethod
+    def crear_producto(datos: dict):
+        raise NotImplementedError(
+            "La creación de productos debe hacerse desde la app de escritorio "
+            "con acceso directo a la base de datos, o agregar el endpoint POST /api/productos."
+        )
+
+    @staticmethod
+    def actualizar_producto(producto_id: int, datos: dict):
+        raise NotImplementedError(
+            "La actualización de productos debe hacerse desde la app de escritorio "
+            "con acceso directo a la base de datos, o agregar el endpoint PUT /api/productos/<id>."
+        )
+
+    @staticmethod
+    def eliminar_producto(producto_id: int):
+        raise NotImplementedError(
+            "La eliminación de productos debe hacerse desde la app de escritorio "
+            "con acceso directo a la base de datos, o agregar el endpoint DELETE /api/productos/<id>."
+        )
+
+    @staticmethod
+    def registrar_entrada(producto_id: int, cantidad: int,
+                          costo_unitario: float, proveedor="", notas=""):
+        raise NotImplementedError(
+            "El registro de entradas debe hacerse desde la app de escritorio "
+            "con acceso directo a la base de datos, o agregar el endpoint POST /api/entradas."
+        )
