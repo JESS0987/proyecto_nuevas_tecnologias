@@ -1,0 +1,23 @@
+# Base de datos (no subir al repo)
+*.db
+*.sqlite
+
+# Reportes generados
+reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
