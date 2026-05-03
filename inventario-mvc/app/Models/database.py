@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from config.settings import DATABASE_PATH, DATABASE_SQL
 
 # ── Configuración Mongo ────────────────────────────────────────────────────
-_MONGO_URI     = os.environ.get("MONGO_URI",     "mongodb://localhost:27017")
+_MONGO_URI     = os.environ.get("MONGO_URI",     "mongodb+srv://oscardejesus0461_db_user:<Perrolobo0>@jesusproyect.mx6bdzn.mongodb.net/?appName=JesusProyect")
 _MONGO_DB      = os.environ.get("MONGO_DB",      "glamour_inventario")
 _MONGO_ENABLED = os.environ.get("MONGO_ENABLED", "1") == "1"
 
