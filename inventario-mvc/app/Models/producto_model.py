@@ -1,9 +1,12 @@
 """
 Model: Producto
 Lógica de datos para productos e inventario.
+Escribe en SQLite Y sincroniza a MongoDB automáticamente.
 """
 
-from app.Models.database import Database
+from app.Models.database import (
+    Database, mongo_upsert_producto, _producto_a_doc
+)
 
 
 class ProductoModel:
@@ -76,7 +79,11 @@ class ProductoModel:
                       costo, precio_venta, stock, stock_minimo)
             )
             conn.commit()
-            return cur.lastrowid
+            pid = cur.lastrowid
+
+        # Sincronizar a MongoDB
+        ProductoModel._sync_mongo(pid)
+        return pid
 
     @staticmethod
     def actualizar(producto_id, codigo, nombre, descripcion, categoria_id,
@@ -95,6 +102,9 @@ class ProductoModel:
             )
             conn.commit()
 
+        # Sincronizar a MongoDB
+        ProductoModel._sync_mongo(producto_id)
+
     @staticmethod
     def eliminar(producto_id):
         """Eliminación lógica (desactivar)."""
@@ -104,6 +114,9 @@ class ProductoModel:
             )
             conn.commit()
 
+        # Marcar como inactivo en Mongo también
+        ProductoModel._sync_mongo(producto_id)
+
     # ------------------------------------------------------------------ #
     #  Stock                                                               #
     # ------------------------------------------------------------------ #
@@ -111,8 +124,8 @@ class ProductoModel:
     @staticmethod
     def actualizar_stock(producto_id, cantidad, conn=None):
         """
-        Descuenta stock. Pasa conn externo si quieres incluirlo en una
-        transacción mayor (p.ej. al registrar un pedido).
+        Ajusta stock. cantidad negativa = salida, positiva = entrada.
+        Pasa conn externo para incluirlo en una transacción mayor.
         """
         sql = """
             UPDATE productos
@@ -122,10 +135,12 @@ class ProductoModel:
         """
         if conn:
             conn.execute(sql, (cantidad, producto_id))
+            # No sync aquí: se hará en el commit del pedido
         else:
             with Database.get_connection() as conn2:
                 conn2.execute(sql, (cantidad, producto_id))
                 conn2.commit()
+            ProductoModel._sync_mongo(producto_id)
 
     @staticmethod
     def con_stock_bajo():
@@ -163,6 +178,9 @@ class ProductoModel:
             )
             conn.commit()
 
+        # Sincronizar el producto actualizado a MongoDB
+        ProductoModel._sync_mongo(producto_id)
+
     @staticmethod
     def historial_entradas(producto_id=None):
         sql = """
@@ -188,3 +206,17 @@ class ProductoModel:
             return conn.execute(
                 "SELECT * FROM categorias ORDER BY nombre"
             ).fetchall()
+
+    # ------------------------------------------------------------------ #
+    #  Helper de sync Mongo                                                #
+    # ------------------------------------------------------------------ #
+
+    @staticmethod
+    def _sync_mongo(producto_id):
+        """Lee el producto de SQLite y lo upserta en MongoDB."""
+        try:
+            row = ProductoModel.obtener_por_id(producto_id)
+            if row:
+                mongo_upsert_producto(_producto_a_doc(dict(row)))
+        except Exception as e:
+            print(f"[Mongo] sync producto {producto_id} error: {e}")

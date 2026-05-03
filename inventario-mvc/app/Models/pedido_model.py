@@ -1,10 +1,14 @@
 """
 Model: Pedido / Venta
 Lógica de datos para ventas y facturación.
+Escribe en SQLite Y sincroniza a MongoDB automáticamente.
 """
 
 import datetime
-from app.Models.database import Database
+from app.Models.database import (
+    Database, mongo_upsert_pedido,
+    _pedido_a_doc, _ts
+)
 from app.Models.producto_model import ProductoModel
 
 
@@ -25,7 +29,7 @@ class PedidoModel:
         return f"FAC-{anio}-{consecutivo:04d}"
 
     # ------------------------------------------------------------------ #
-    #  Crear pedido (transacción completa)                                 #
+    #  Crear pedido — escribe SQLite + sincroniza Mongo                   #
     # ------------------------------------------------------------------ #
 
     @staticmethod
@@ -33,7 +37,6 @@ class PedidoModel:
         """
         items: lista de dicts con keys:
             producto_id, cantidad, precio_unitario, costo_unitario
-        estado: estado inicial ('pendiente' por defecto)
         Retorna: numero_factura o lanza excepción.
         """
         if not items:
@@ -44,7 +47,6 @@ class PedidoModel:
         total    = subtotal - descuento
 
         with Database.get_connection() as conn:
-            # Insertar cabecera del pedido
             cur = conn.execute(
                 """INSERT INTO pedidos
                    (numero_factura, cliente_id, subtotal, descuento, total, estado, notas)
@@ -53,7 +55,6 @@ class PedidoModel:
             )
             pedido_id = cur.lastrowid
 
-            # Insertar ítems y descontar stock
             for item in items:
                 sub = item["cantidad"] * item["precio_unitario"]
                 conn.execute(
@@ -64,22 +65,23 @@ class PedidoModel:
                     (pedido_id, item["producto_id"], item["cantidad"],
                      item["precio_unitario"], item["costo_unitario"], sub),
                 )
-                # Descontar stock (cantidad negativa = salida)
                 ProductoModel.actualizar_stock(
                     item["producto_id"], -item["cantidad"], conn=conn
                 )
 
             conn.commit()
 
+        # ── Sincronizar a MongoDB ──────────────────────────────────────
+        PedidoModel._sync_mongo(numero_factura)
+
         return numero_factura
 
     # ------------------------------------------------------------------ #
-    #  Actualizar estado                                                   #
+    #  Actualizar estado — escribe SQLite + sincroniza Mongo              #
     # ------------------------------------------------------------------ #
 
     @staticmethod
     def actualizar_estado(pedido_id, nuevo_estado):
-        """Cambia únicamente el campo 'estado' de un pedido."""
         with Database.get_connection() as conn:
             conn.execute(
                 "UPDATE pedidos SET estado = ? WHERE id = ?",
@@ -87,8 +89,31 @@ class PedidoModel:
             )
             conn.commit()
 
+        # ── Sincronizar a MongoDB ──────────────────────────────────────
+        with Database.get_connection() as conn:
+            row = conn.execute(
+                "SELECT numero_factura FROM pedidos WHERE id = ?", (pedido_id,)
+            ).fetchone()
+        if row:
+            PedidoModel._sync_mongo(row["numero_factura"])
+
     # ------------------------------------------------------------------ #
-    #  Consultas                                                           #
+    #  Helper: leer pedido completo y enviarlo a Mongo                    #
+    # ------------------------------------------------------------------ #
+
+    @staticmethod
+    def _sync_mongo(numero_factura):
+        """Lee el pedido completo de SQLite y lo upserta en MongoDB."""
+        try:
+            pedido, items = PedidoModel.obtener_por_numero(numero_factura)
+            if pedido:
+                doc = _pedido_a_doc(dict(pedido), [dict(i) for i in items])
+                mongo_upsert_pedido(doc)
+        except Exception as e:
+            print(f"[Mongo] sync pedido {numero_factura} error: {e}")
+
+    # ------------------------------------------------------------------ #
+    #  Consultas (solo SQLite — fuente de verdad)                         #
     # ------------------------------------------------------------------ #
 
     @staticmethod
@@ -156,11 +181,10 @@ class PedidoModel:
 
     @staticmethod
     def crear_cliente(nombre, documento="", telefono="", email="", direccion=""):
-        # Convertir strings vacíos a None para evitar conflicto UNIQUE en documento
-        documento  = documento.strip()  or None
-        telefono   = telefono.strip()   or None
-        email      = email.strip()      or None
-        direccion  = direccion.strip()  or None
+        documento = documento.strip() or None
+        telefono  = telefono.strip()  or None
+        email     = email.strip()     or None
+        direccion = direccion.strip() or None
         with Database.get_connection() as conn:
             cur = conn.execute(
                 """INSERT INTO clientes (nombre, documento, telefono, email, direccion)
