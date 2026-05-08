@@ -1,96 +1,84 @@
-# 📦 Sistema de Inventario MVC
+# ✦ Glamour Bisutería — Sistema de Inventario y Tienda Web
 
-> Aplicación de escritorio para la gestión y control de inventario, desarrollada en Python bajo el patrón arquitectónico **Model-View-Controller (MVC)**. Diseñada como proyecto académico para la asignatura de Nuevas Tecnologías.
+> Sistema fullstack de gestión de inventario con tienda web integrada, desarrollado por el **Grupo 3** de Nuevas Tecnologías — UTS Bucaramanga.
 
----
-
-## 📋 Tabla de Contenidos
-
-- [Descripción](#-descripción)
-- [Stack Tecnológico](#-stack-tecnológico)
-- [Características](#-características)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Requisitos Previos](#-requisitos-previos)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Arquitectura MVC](#-arquitectura-mvc)
-- [Contribución](#-contribución)
-- [Licencia](#-licencia)
+**Jesús González · Marlón Gélvez · Sebastián Velandia**
 
 ---
 
-## 📝 Descripción
+## 📋 Descripción
 
-Este sistema permite registrar, consultar, actualizar y eliminar productos de un inventario mediante una interfaz gráfica desarrollada en Python. El proyecto aplica el patrón **MVC** para separar las responsabilidades de datos, lógica de negocio y presentación, facilitando el mantenimiento y la escalabilidad del código.
+**Glamour Bisutería** es un sistema de gestión dual que combina:
 
----
+- Una **aplicación de escritorio** (Python + Tkinter) con arquitectura MVC para administrar el inventario de forma local.
+- Una **API REST** (Flask) desplegada en la nube que expone los datos del inventario.
+- Una **tienda web** (HTML/CSS/JS vanilla) que consume la API y permite a los clientes ver productos, armar su carrito y generar pedidos con factura.
 
-## 🛠 Stack Tecnológico
-
-| Tecnología | Versión | Propósito |
-|---|---|---|
-| Python | 3.10+ | Lenguaje principal |
-| Tkinter | Built-in | Interfaz gráfica (View) |
-| SQLite3 | Built-in | Persistencia de datos (Model) |
-| unittest | Built-in | Pruebas unitarias |
-
-> **Nota:** Todas las dependencias son parte de la biblioteca estándar de Python. No se requieren instalaciones externas.
+Los datos se persisten en **SQLite** como fuente de verdad y se sincronizan automáticamente con **MongoDB** en cada operación de escritura.
 
 ---
 
-## ✨ Características
+## 🛠️ Stack Tecnológico
 
-| # | Característica | Estado |
-|---|---|---|
-| 1 | Registro de nuevos productos | ✅ Implementado |
-| 2 | Consulta y búsqueda de inventario | ✅ Implementado |
-| 3 | Actualización de stock y datos | ✅ Implementado |
-| 4 | Eliminación de registros | ✅ Implementado |
-| 5 | Persistencia con base de datos SQLite | ✅ Implementado |
-| 6 | Separación de capas MVC | ✅ Implementado |
-| 7 | Interfaz gráfica con Tkinter | ✅ Implementado |
-| 8 | Validación de datos de entrada | 🚧 En desarrollo |
-| 9 | Exportación de reportes | 🔜 Planeado |
-| 10 | Autenticación de usuarios | 🔜 Planeado |
+| Capa | Tecnología | Versión | Uso |
+|------|-----------|---------|-----|
+| App de escritorio | Python + Tkinter | 3.12 / 3.13 | Interfaz de administración local |
+| API REST | Flask | 3.0.3 | Endpoints de productos, clientes y pedidos |
+| CORS | Flask-CORS | 4.0.1 | Permitir peticiones del frontend |
+| Servidor WSGI | Gunicorn | 22.0.0 | Despliegue en producción |
+| Base de datos principal | SQLite | built-in | Fuente de verdad; archivo `inventario.db` |
+| Base de datos nube | MongoDB (PyMongo) | 4.17.0 | Réplica automática de productos y pedidos |
+| Frontend | HTML5 + CSS3 + JS vanilla | — | Tienda web responsiva |
+| Tipografía | Google Fonts (Cormorant Garamond + DM Sans) | — | Diseño de lujo |
+| Despliegue | Railway | — | Hosting del servidor Flask |
 
 ---
 
-## 📁 Estructura del Proyecto
+## 🗂️ Estructura del Repositorio
 
 ```
 proyecto_nuevas_tecnologias/
+├── api.py                      # API REST principal (Flask)
+├── index.html                  # Tienda web (frontend completo)
+├── database.sql                # Esquema + datos semilla
+├── requirements.txt            # Dependencias Python
+├── Procfile                    # Comando de arranque para Railway
+├── railway.json                # Configuración de despliegue
+├── DESPLIEGUE.md               # Guía de despliegue en Railway
 │
-└── inventario-mvc/
-    ├── models/
-    │   └── producto_model.py       # Lógica de acceso a datos y ORM
-    ├── views/
-    │   └── inventario_view.py      # Interfaz gráfica (Tkinter)
-    ├── controllers/
-    │   └── inventario_controller.py # Lógica de negocio y mediación
-    ├── database/
-    │   └── inventario.db           # Base de datos SQLite (autogenerada)
-    ├── tests/
-    │   └── test_producto.py        # Pruebas unitarias
-    └── main.py                     # Punto de entrada de la aplicación
+└── inventario-mvc/             # Aplicación de escritorio (MVC)
+    ├── main.py                 # Punto de entrada — lanza Tkinter
+    ├── api_client.py           # Cliente HTTP que consume la API
+    ├── config/
+    │   └── settings.py         # Configuración global (DB path, etc.)
+    ├── app/
+    │   ├── Models/
+    │   │   ├── database.py         # Conexión SQLite + helpers MongoDB
+    │   │   ├── producto_model.py   # CRUD de productos + sync Mongo
+    │   │   ├── pedido_model.py     # CRUD de pedidos + sync Mongo
+    │   │   └── rentabilidad_model.py
+    │   ├── Views/
+    │   │   ├── main_window.py      # Ventana principal con tabs
+    │   │   ├── productos_view.py   # Gestión de productos
+    │   │   ├── ventas_view.py      # Registro de ventas
+    │   │   ├── rentabilidad_view.py
+    │   │   └── widgets.py          # Componentes reutilizables
+    │   └── Controllers/
+    │       ├── producto_controller.py  # Delega a api_client
+    │       ├── pedido_controller.py
+    │       └── rentabilidad_controller.py
+    └── database.sql            # Esquema SQLite local
 ```
 
 ---
 
-## ✅ Requisitos Previos
+## ⚙️ Instalación y Configuración
 
-- Python **3.10 o superior**
-- Sistema operativo: Windows, macOS o Linux
-- Git (para clonar el repositorio)
+### Requisitos previos
 
-Verificar versión de Python instalada:
-
-```bash
-python --version
-```
-
----
-
-## 🚀 Instalación
+- Python 3.12 o superior
+- pip
+- Git
 
 ### 1. Clonar el repositorio
 
@@ -99,77 +87,123 @@ git clone https://github.com/JESS0987/proyecto_nuevas_tecnologias.git
 cd proyecto_nuevas_tecnologias
 ```
 
-### 2. (Opcional) Crear un entorno virtual
+### 2. Crear entorno virtual e instalar dependencias
 
 ```bash
-# Crear entorno virtual
 python -m venv venv
 
-# Activar en Windows
+# Windows
 venv\Scripts\activate
 
-# Activar en macOS/Linux
+# macOS / Linux
 source venv/bin/activate
+
+pip install -r requirements.txt
 ```
 
-### 3. Instalar dependencias
+### 3. Inicializar la base de datos
 
-Este proyecto no requiere dependencias externas. Todos los módulos utilizados son parte de la biblioteca estándar de Python.
+```bash
+# Desde la raíz del repo
+sqlite3 inventario-mvc/inventario.db < database.sql
+```
 
-### 4. Ejecutar la aplicación
+### 4. Ejecutar la API (desarrollo local)
+
+```bash
+python api.py
+# La API queda disponible en http://localhost:5000
+```
+
+### 5. Abrir la tienda web
+
+Abre `index.html` directamente en el navegador. El frontend apunta al mismo origen que el servidor Flask.
+
+### 6. Ejecutar la app de escritorio (opcional)
 
 ```bash
 cd inventario-mvc
 python main.py
 ```
 
-La base de datos SQLite se creará automáticamente en la primera ejecución.
+---
+
+## 🌐 Endpoints de la API
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET` | `/` | Sirve la tienda web (`index.html`) |
+| `GET` | `/health` | Estado del servidor |
+| `GET` | `/api/productos` | Lista todos los productos activos |
+| `GET` | `/api/productos?q=collar` | Búsqueda de productos por término |
+| `GET` | `/api/productos/<id>` | Detalle de un producto |
+| `GET` | `/api/clientes` | Lista de clientes registrados |
+| `POST` | `/api/clientes` | Registrar nuevo cliente |
+| `GET` | `/api/pedidos` | Lista los últimos 100 pedidos |
+| `POST` | `/api/pedidos` | Crear un nuevo pedido |
+| `GET` | `/api/pedidos/<num_factura>` | Detalle de pedido por número |
+| `PATCH` | `/api/pedidos/<id>/estado` | Actualizar estado (`pendiente` / `despachado` / `cancelado`) |
 
 ---
 
-## 💡 Uso
+## ✨ Tabla de Características
 
-1. Al iniciar la aplicación, se mostrará la ventana principal del inventario.
-2. Desde la interfaz puedes:
-   - **Agregar** un nuevo producto completando el formulario y haciendo clic en "Guardar".
-   - **Buscar** productos por nombre o código en el campo de búsqueda.
-   - **Editar** seleccionando un producto de la tabla y modificando sus campos.
-   - **Eliminar** seleccionando un producto y confirmando la acción.
+| Característica | Estado | Descripción |
+|----------------|--------|-------------|
+| Catálogo web de productos | ✅ Completo | Grid responsivo con filtros por categoría y búsqueda en tiempo real |
+| Carrito de compras | ✅ Completo | Agregar, quitar, modificar cantidades con validación de stock |
+| Checkout y facturación | ✅ Completo | Registro de cliente + pedido + factura imprimible/PDF |
+| API REST | ✅ Completo | Endpoints de productos, clientes y pedidos con validaciones |
+| App de escritorio MVC | ✅ Completo | Tkinter con arquitectura Model-View-Controller |
+| Persistencia SQLite | ✅ Completo | Base de datos local con esquema relacional normalizado |
+| Sincronización MongoDB | ✅ Completo | Upsert automático en cada escritura (productos y pedidos) |
+| Detección automática de rutas | ✅ Completo | La API detecta su ubicación en el sistema de archivos |
+| Despliegue en Railway | ✅ Completo | 8 despliegues realizados, Procfile configurado |
+| Gestión de stock bajo | ✅ Completo | Alertas visuales cuando el stock está en mínimo |
+| Descuentos en pedidos | ✅ Completo | Soporte de descuento por monto en cada pedido |
+| Control de rentabilidad | 🚧 En progreso | Vista de márgenes por producto en la app de escritorio |
+| Autenticación de administrador | 🔜 Pendiente | Login para proteger la app de escritorio |
+| Panel de reportes web | 🔜 Pendiente | Dashboard con gráficas de ventas por periodo |
 
 ---
 
-## 🏗 Arquitectura MVC
-
-El proyecto implementa estrictamente el patrón **Model-View-Controller**:
+## 🏗️ Arquitectura del Sistema
 
 ```
-Usuario
-   │
-   ▼
-[View] ──────► [Controller] ──────► [Model]
-  ▲                │                   │
-  └────────────────┴───────────────────┘
-       (respuesta / actualización UI)
+┌─────────────────────────────────────────────────────────┐
+│                    CLIENTE (Navegador)                   │
+│               index.html  ─►  fetch() API               │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP/JSON
+┌──────────────────────▼──────────────────────────────────┐
+│                   API REST (Flask)                       │
+│  api.py  ─►  ProductoModel / PedidoModel                │
+└───────────┬─────────────────────────┬───────────────────┘
+            │ SQLite (fuente verdad)  │ MongoDB (réplica)
+     ┌──────▼──────┐          ┌───────▼──────┐
+     │ inventario  │          │   MongoDB     │
+     │    .db      │          │   Atlas/local │
+     └─────────────┘          └──────────────┘
+            ▲
+            │ api_client.py (HTTP)
+┌──────────────────────────────────────────────────────────┐
+│              App de Escritorio (Tkinter MVC)             │
+│  main.py ─► MainWindow ─► Controllers ─► api_client     │
+└──────────────────────────────────────────────────────────┘
 ```
-
-- **Model (`models/`):** Gestiona la conexión con SQLite y las operaciones CRUD. No conoce la vista.
-- **View (`views/`):** Renderiza la interfaz con Tkinter. No contiene lógica de negocio.
-- **Controller (`controllers/`):** Recibe eventos de la vista, los procesa y llama al modelo. Es el mediador.
 
 ---
 
-## 🤝 Contribución
+## 👥 Equipo — Grupo 3
 
-¿Deseas colaborar? Lee el archivo [CONTRIBUTING.md](./Contributing.md) para conocer las normas y flujo de trabajo del proyecto.
+| Nombre | GitHub | Rol |
+|--------|--------|-----|
+| Jesús González | [@JESS0987](https://github.com/JESS0987) | Líder · Backend · Despliegue |
+| Marlón Gélvez | — | Frontend · Base de datos |
+| Sebastián Velandia | — | App de escritorio · MVC |
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto es de uso académico. Desarrollado para la asignatura de Nuevas Tecnologías.
-
----
-
-<p align="center">
-  Desarrollado con 🐍 Python · Patrón MVC · SQLite
-</p>
+Proyecto académico desarrollado para la asignatura **Nuevas Tecnologías** — Universidad de Tecnología de Santander (UTS), 2025.
