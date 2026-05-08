@@ -160,7 +160,7 @@ Usuario
 
 ## 🤝 Contribución
 
-¿Deseas colaborar? Lee el archivo [CONTRIBUTING.md](./CONTRIBUTING.md) para conocer las normas y flujo de trabajo del proyecto.
+¿Deseas colaborar? Lee el archivo [CONTRIBUTING.md](./Contributing.md) para conocer las normas y flujo de trabajo del proyecto.
 
 ---
 
