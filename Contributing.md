@@ -1,221 +1,174 @@
-# 🤝 Guía de Contribución
+# Guía de Contribución — Glamour Bisutería
 
-¡Gracias por tu interés en contribuir a **Sistema de Inventario MVC**! Este documento describe las normas y el flujo de trabajo que deben seguir todos los colaboradores para mantener la calidad y consistencia del código.
-
----
-
-## 📋 Tabla de Contenidos
-
-- [Código de Conducta](#-código-de-conducta)
-- [¿Cómo puedo contribuir?](#-cómo-puedo-contribuir)
-- [Flujo de Trabajo con Git](#-flujo-de-trabajo-con-git)
-- [Convenciones de Código](#-convenciones-de-código)
-- [Convenciones de Commits](#-convenciones-de-commits)
-- [Proceso de Pull Request](#-proceso-de-pull-request)
-- [Reportar Bugs](#-reportar-bugs)
+¡Gracias por querer mejorar el proyecto! Esta guía explica cómo colaborar correctamente en el repositorio.
 
 ---
 
-## 📜 Código de Conducta
+## 📋 Código de Conducta
 
-Este proyecto se rige por principios de respeto y colaboración profesional. Se espera que todos los participantes:
-
-- Usen lenguaje inclusivo y respetuoso.
-- Acepten críticas constructivas con madurez.
-- Se enfoquen en lo que es mejor para el proyecto.
-- Eviten conductas inapropiadas o discriminatorias.
-
----
-
-## 🙋 ¿Cómo puedo contribuir?
-
-Existen varias formas de aportar al proyecto:
-
-- 🐛 **Reportar bugs** mediante GitHub Issues.
-- 💡 **Proponer nuevas funcionalidades** abriendo un Issue con la etiqueta `enhancement`.
-- 🔧 **Corregir errores** o mejorar el código existente mediante Pull Requests.
-- 📝 **Mejorar la documentación** del proyecto.
-- ✅ **Escribir pruebas unitarias** para aumentar la cobertura de tests.
+- Respeta a todos los integrantes del equipo.
+- Escribe en español dentro del código y la documentación.
+- Si encuentras un bug, repórtalo antes de arreglarlo directamente.
+- Las decisiones de arquitectura se discuten en Issues antes de implementarse.
 
 ---
 
 ## 🌿 Flujo de Trabajo con Git
 
-Este proyecto utiliza el modelo **Feature Branch Workflow**.
+### Ramas principales
 
-### 1. Hacer fork y clonar
+| Rama | Propósito |
+|------|-----------|
+| `main` | Código en producción (Railway) — **nunca hacer push directo** |
+| `develop` | Rama de integración — aquí se mezclan los features |
+| `feature/<nombre>` | Nueva funcionalidad |
+| `fix/<nombre>` | Corrección de bug |
+| `docs/<nombre>` | Solo documentación |
+
+### Paso a paso para contribuir
 
 ```bash
-# Hacer fork desde GitHub y luego clonar tu fork
+# 1. Haz fork del repositorio (si eres colaborador externo)
+# 2. Clona tu fork
 git clone https://github.com/TU_USUARIO/proyecto_nuevas_tecnologias.git
-cd proyecto_nuevas_tecnologias
 
-# Agregar el repositorio original como remote upstream
-git remote add upstream https://github.com/JESS0987/proyecto_nuevas_tecnologias.git
-```
+# 3. Crea tu rama desde develop
+git checkout develop
+git pull origin develop
+git checkout -b feature/mi-nueva-funcionalidad
 
-### 2. Mantener tu fork actualizado
-
-```bash
-git fetch upstream
-git checkout main
-git merge upstream/main
-```
-
-### 3. Crear una rama para tu contribución
-
-```bash
-# Nomenclatura: tipo/descripcion-corta
-git checkout -b feature/agregar-exportacion-pdf
-git checkout -b fix/corregir-validacion-stock
-git checkout -b docs/actualizar-readme
-```
-
-### 4. Realizar los cambios y hacer commit
-
-```bash
+# 4. Haz tus cambios y commits
 git add .
-git commit -m "feat: agregar exportación de inventario a PDF"
+git commit -m "feat(api): agregar endpoint DELETE /api/productos/<id>"
+
+# 5. Sube tu rama
+git push origin feature/mi-nueva-funcionalidad
+
+# 6. Abre un Pull Request hacia develop en GitHub
 ```
-
-### 5. Subir la rama y abrir un Pull Request
-
-```bash
-git push origin feature/agregar-exportacion-pdf
-```
-
-Luego abre un Pull Request desde GitHub hacia la rama `main` del repositorio original.
 
 ---
 
-## 🧹 Convenciones de Código
+## 📝 Convenciones de Código Python (PEP 8)
 
-Este proyecto sigue las guías de estilo de Python **PEP 8**. Puntos clave:
+| Elemento | Convención | Ejemplo correcto |
+|----------|-----------|-----------------|
+| Variables y funciones | `snake_case` | `precio_venta`, `obtener_todos()` |
+| Clases | `PascalCase` | `ProductoModel`, `PedidoController` |
+| Constantes | `UPPER_SNAKE_CASE` | `BASE_DIR`, `DB_PATH` |
+| Módulos | `snake_case` | `producto_model.py`, `api_client.py` |
+| Parámetros booleanos | Nombres descriptivos | `solo_activos=True` (no `flag=True`) |
+| Longitud de línea | Máximo 100 caracteres | — |
+| Comillas | Dobles `"` en docstrings, simples `'` en código | — |
 
-### Nomenclatura
+### Docstrings (estilo Google/PEP 257)
 
-| Elemento | Convención | Ejemplo |
-|---|---|---|
-| Variables | `snake_case` | `nombre_producto` |
-| Funciones | `snake_case` | `obtener_producto_por_id()` |
-| Clases | `PascalCase` | `ProductoModel` |
-| Constantes | `UPPER_SNAKE_CASE` | `MAX_STOCK_PERMITIDO` |
-| Archivos | `snake_case` | `producto_controller.py` |
-
-### Reglas generales
-
-- Máximo **79 caracteres** por línea.
-- Usar **4 espacios** para indentación (no tabulaciones).
-- Dejar **2 líneas en blanco** entre definiciones de clases y funciones de alto nivel.
-- Dejar **1 línea en blanco** entre métodos dentro de una clase.
-- Toda función pública debe tener su **docstring** explicando parámetros y retorno.
-- Evitar nombres genéricos como `data`, `info`, `temp`, `x`, `obj`. Usar nombres descriptivos.
-
-### Docstrings (estilo Google)
+Todos los métodos públicos deben tener docstring:
 
 ```python
-def actualizar_stock(self, producto_id: int, cantidad: int) -> bool:
-    """Actualiza la cantidad en stock de un producto existente.
+@staticmethod
+def crear_pedido(cliente_id, items, descuento=0, notas="", estado="pendiente"):
+    """
+    Crea un nuevo pedido y lo registra en SQLite y MongoDB.
 
     Args:
-        producto_id (int): Identificador único del producto.
-        cantidad (int): Nueva cantidad a establecer en el inventario.
+        cliente_id (int): ID del cliente en la tabla clientes.
+        items (list[dict]): Lista de ítems con keys:
+            - producto_id (int)
+            - cantidad (int)
+            - precio_unitario (float)
+            - costo_unitario (float)
+        descuento (float): Monto fijo de descuento. Por defecto 0.
+        notas (str): Observaciones del pedido. Por defecto "".
+        estado (str): Estado inicial. Por defecto "pendiente".
 
     Returns:
-        bool: True si la actualización fue exitosa, False en caso contrario.
+        str: Número de factura generado (ej. "FAC-2025-0026").
 
     Raises:
-        ValueError: Si la cantidad proporcionada es negativa.
+        ValueError: Si items está vacío.
+        sqlite3.Error: Si falla la transacción en base de datos.
     """
 ```
 
 ---
 
-## 📝 Convenciones de Commits
+## 💬 Convenciones de Commits (Conventional Commits)
 
-Seguimos el estándar **Conventional Commits**. El formato es:
+Formato: `tipo(scope): descripción corta en minúsculas`
 
-```
-<tipo>(<alcance opcional>): <descripción corta en presente>
-```
-
-### Tipos permitidos
-
-| Tipo | Cuándo usarlo |
-|---|---|
-| `feat` | Nueva funcionalidad |
-| `fix` | Corrección de un bug |
-| `docs` | Cambios en documentación |
-| `style` | Formato, espacios, sin cambios lógicos |
-| `refactor` | Refactorización sin cambiar comportamiento |
-| `test` | Agregar o corregir pruebas |
-| `chore` | Tareas de mantenimiento, dependencias |
-
-### Ejemplos válidos
-
-```
-feat(controller): agregar método de búsqueda por categoría
-fix(model): corregir consulta SQL que omitía productos con stock cero
-docs: actualizar sección de instalación en README
-test(model): agregar pruebas unitarias para ProductoModel
-refactor(view): renombrar variables para seguir PEP 8
-```
-
-### Reglas para el mensaje de commit
-
-- Usar el **imperativo en presente**: "agregar" no "agregado" ni "agrega".
-- Primera letra en **minúscula**.
-- Sin punto final.
-- Máximo **72 caracteres** en la línea del título.
+| Tipo | Cuándo usarlo | Ejemplo |
+|------|--------------|---------|
+| `feat` | Nueva funcionalidad | `feat(api): agregar endpoint PATCH /pedidos/<id>/estado` |
+| `fix` | Corrección de bug | `fix(modelo): corregir cálculo de subtotal con descuento` |
+| `docs` | Solo documentación | `docs: actualizar README con guía de instalación` |
+| `refactor` | Refactorización sin cambio de comportamiento | `refactor(controller): delegar lógica de stock a modelo` |
+| `style` | Formato, espacios, renombrado de variables | `style(vista): aplicar convenciones PEP 8` |
+| `test` | Agregar o corregir tests | `test(modelo): agregar test de creación de pedido vacío` |
+| `chore` | Cambios en herramientas, dependencias | `chore: actualizar Flask a 3.0.3` |
 
 ---
 
-## 🔍 Proceso de Pull Request
+## 🐛 Reportar un Bug
 
-1. Asegúrate de que tu rama esté actualizada con `main` antes de abrir el PR.
-2. El PR debe incluir:
-   - **Título** descriptivo siguiendo Conventional Commits.
-   - **Descripción** explicando qué cambió y por qué.
-   - **Screenshots** (si hay cambios en la interfaz).
-   - **Referencia a un Issue** si aplica: `Closes #12`.
-3. Todos los tests existentes deben pasar.
-4. El código debe seguir las convenciones descritas en este documento.
-5. Al menos **1 reviewer** debe aprobar el PR antes de hacer merge.
-6. No hacer merge de tu propio PR salvo autorización del maintainer.
+Abre un **Issue** en GitHub con la siguiente información:
 
----
+```
+**Descripción del problema:**
+[Qué está fallando]
 
-## 🐛 Reportar Bugs
+**Pasos para reproducirlo:**
+1. Ir a...
+2. Hacer clic en...
+3. Ver el error...
 
-Para reportar un bug, abre un **Issue** en GitHub con la siguiente información:
+**Comportamiento esperado:**
+[Qué debería pasar]
 
-```markdown
-## Descripción del bug
-<!-- Descripción clara y concisa del problema -->
+**Comportamiento actual:**
+[Qué está pasando]
 
-## Pasos para reproducirlo
-1. Ir a '...'
-2. Hacer clic en '...'
-3. Ver el error
-
-## Comportamiento esperado
-<!-- Qué debería suceder en lugar del error -->
-
-## Capturas de pantalla
-<!-- Si aplica, agrega imágenes que ayuden a entender el problema -->
-
-## Entorno
-- OS: [e.g. Windows 11]
-- Python: [e.g. 3.11.2]
-- Versión del proyecto: [e.g. commit hash o tag]
+**Entorno:**
+- SO: Windows / macOS / Linux
+- Python: 3.x
+- Rama: main / develop
 ```
 
 ---
 
-## ❓ ¿Tienes dudas?
+## ✅ Criterios para que un Pull Request sea aprobado
 
-Si tienes preguntas que no están cubiertas aquí, abre un **Issue** con la etiqueta `question` y con gusto te ayudamos.
+Un PR será revisado y aprobado si cumple todos estos puntos:
+
+- [ ] Apunta a `develop`, no a `main`
+- [ ] Tiene al menos un commit con mensaje en formato Conventional Commits
+- [ ] No rompe los endpoints existentes de la API
+- [ ] El código nuevo tiene docstrings en métodos públicos
+- [ ] No hay variables con nombres de una sola letra (excepto bucles simples como `i`, `k`)
+- [ ] El archivo `requirements.txt` fue actualizado si se añadió alguna dependencia
+- [ ] Se probó manualmente tanto la API como la app de escritorio si el cambio afecta a ambas
 
 ---
 
-<p align="center">¡Gracias por contribuir! 🚀</p>
+## 🗂️ Archivos que NO se deben subir
+
+Asegúrate de que tu `.gitignore` excluya:
+
+```
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+inventario.db        ← base de datos local con datos reales
+*.db.hash
+.DS_Store
+```
+
+---
+
+## 📬 Contacto
+
+Cualquier duda sobre el proyecto, escríbele al equipo a través de los Issues de GitHub o en el canal del grupo de estudio.
+
+> Proyecto académico — Nuevas Tecnologías · Grupo 3 · UTS 2025
