@@ -199,7 +199,7 @@ python main.py
 | Nombre | GitHub | Rol |
 |--------|--------|-----|
 | Jesús González | [@JESS0987](https://github.com/JESS0987) | Líder · Backend · Despliegue |
-| Marlón Gélvez | — |@MarlonGelvez Frontend · Base de datos |
+| Marlón Gélvez | [@Marlon Gelvez]((https://github.com/MarlonGelvez)) | Frontend · Base de datos |
 | Sebastián Velandia | — | App de escritorio · MVC |
 
 ---
