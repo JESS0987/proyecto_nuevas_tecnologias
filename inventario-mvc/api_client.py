@@ -6,7 +6,7 @@ Todos los datos vienen de: https://inventarionuevastec.up.railway.app
 
 import requests
 
-BASE_URL = "https://inventarionuevastec.up.railway.app"
+BASE_URL = "https://proyectonuevastecnologias-production.up.railway.app"
 TIMEOUT  = 10  # segundos
 
 
