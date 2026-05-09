@@ -10,21 +10,40 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;}
 
-/* Loader */
+/* ── LOADER ─────────────────────────────── */
 #loader{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;}
 .logo-anim{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--gold);letter-spacing:.15em;}
 .spinner{width:36px;height:36px;border:2px solid var(--gold-lt);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* Header */
+/* ── HEADER ─────────────────────────────── */
 header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);display:flex;align-items:center;justify-content:space-between;height:70px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(201,168,76,.25);}
 .brand{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold);letter-spacing:.1em;}
 .brand span{font-style:italic;font-weight:300;}
+.header-actions{display:flex;align-items:center;gap:12px;}
 .cart-btn{background:none;border:1px solid var(--gold);color:var(--gold);padding:8px 20px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:.85rem;letter-spacing:.08em;display:flex;align-items:center;gap:8px;transition:all .2s;}
 .cart-btn:hover{background:var(--gold);color:var(--dark);}
 .cart-count{background:var(--gold);color:var(--dark);border-radius:50%;width:20px;height:20px;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
 
-/* Hero */
+/* Botón login en header */
+.login-btn{background:none;border:1px solid rgba(201,168,76,.4);color:rgba(201,168,76,.8);padding:8px 18px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:.82rem;letter-spacing:.07em;transition:all .2s;}
+.login-btn:hover{border-color:var(--gold);color:var(--gold);}
+.user-pill{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 14px;border:1px solid rgba(201,168,76,.4);border-radius:2px;transition:all .2s;}
+.user-pill:hover{border-color:var(--gold);}
+.user-pill .avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.avatar-admin{background:var(--gold);color:var(--dark);}
+.avatar-client{background:rgba(201,168,76,.2);color:var(--gold);}
+.user-name{font-size:.82rem;color:var(--gold-lt);letter-spacing:.04em;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.user-dropdown{position:absolute;top:70px;right:clamp(16px,4vw,64px);background:var(--dark);border:1px solid rgba(201,168,76,.3);border-radius:2px;min-width:200px;z-index:101;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.user-dropdown .dd-head{padding:14px 16px;border-bottom:1px solid rgba(201,168,76,.15);}
+.user-dropdown .dd-head p{font-size:.78rem;color:var(--muted);letter-spacing:.05em;}
+.user-dropdown .dd-head strong{display:block;color:var(--gold);font-size:.92rem;margin-top:2px;}
+.dd-item{display:block;width:100%;background:none;border:none;text-align:left;padding:11px 16px;color:var(--gold-lt);font-family:inherit;font-size:.85rem;cursor:pointer;letter-spacing:.04em;transition:background .15s;}
+.dd-item:hover{background:rgba(201,168,76,.1);}
+.dd-item.danger{color:#E88;}
+.dd-sep{height:1px;background:rgba(201,168,76,.15);}
+
+/* ── HERO ────────────────────────────────── */
 .hero{background:linear-gradient(135deg,var(--dark) 0%,#2C231A 100%);color:var(--white);text-align:center;padding:clamp(48px,10vw,100px) 24px;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.12) 0%,transparent 70%);}
 .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:var(--gold);letter-spacing:.08em;position:relative;}
@@ -34,12 +53,12 @@ header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);
 .search-wrap button{background:var(--gold);border:none;padding:0 22px;cursor:pointer;color:var(--dark);font-size:.9rem;letter-spacing:.06em;font-family:inherit;font-weight:500;transition:background .2s;}
 .search-wrap button:hover{background:#b8953c;}
 
-/* Categorías */
+/* ── CATEGORÍAS ─────────────────────────── */
 .cats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:28px 24px 16px;}
 .cat-pill{border:1px solid var(--gold-lt);background:transparent;color:var(--mid);padding:7px 18px;border-radius:999px;cursor:pointer;font-family:inherit;font-size:.82rem;letter-spacing:.05em;transition:all .2s;}
 .cat-pill.active,.cat-pill:hover{background:var(--gold);border-color:var(--gold);color:var(--dark);}
 
-/* Grid */
+/* ── GRID ────────────────────────────────── */
 .products-section{padding:0 clamp(16px,4vw,64px) 80px;}
 .section-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--mid);margin-bottom:28px;letter-spacing:.04em;border-bottom:1px solid var(--gold-lt);padding-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
 .prod-count{font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--muted);font-weight:400;}
@@ -60,11 +79,11 @@ header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);
 .add-btn:disabled{background:#ccc;cursor:not-allowed;}
 .no-results{text-align:center;color:var(--muted);padding:60px 0;font-size:1.1rem;grid-column:1/-1;}
 
-/* Error banner */
+/* ── ERROR BANNER ────────────────────────── */
 .error-banner{background:#3D1A1A;color:#FFB3B3;padding:16px 24px;text-align:center;font-size:.9rem;display:none;}
 .error-banner.show{display:block;}
 
-/* Carrito */
+/* ── CARRITO ─────────────────────────────── */
 .cart-overlay{position:fixed;inset:0;background:rgba(26,22,18,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
 .cart-overlay.open{opacity:1;pointer-events:all;}
 .cart-panel{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--white);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(26,22,18,.15);}
@@ -92,7 +111,7 @@ header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);
 .checkout-btn{width:100%;background:var(--gold);color:var(--dark);border:none;padding:14px;font-family:inherit;font-size:1rem;font-weight:500;letter-spacing:.08em;cursor:pointer;border-radius:2px;transition:background .2s;}
 .checkout-btn:hover{background:#b8953c;}
 
-/* Modal */
+/* ── MODALES BASE ────────────────────────── */
 .modal-overlay{position:fixed;inset:0;background:rgba(26,22,18,.6);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
 .modal{background:var(--white);border-radius:4px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .3s;}
@@ -102,7 +121,7 @@ header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);
 .modal-body{padding:24px 28px;}
 .form-group{margin-bottom:18px;}
 label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;letter-spacing:.04em;}
-input[type=text],input[type=email],input[type=tel],textarea,select{width:100%;border:1px solid #E0D8CC;border-radius:2px;padding:11px 14px;font-family:inherit;font-size:.9rem;color:var(--dark);outline:none;transition:border-color .2s;background:var(--white);}
+input[type=text],input[type=email],input[type=tel],input[type=password],textarea,select{width:100%;border:1px solid #E0D8CC;border-radius:2px;padding:11px 14px;font-family:inherit;font-size:.9rem;color:var(--dark);outline:none;transition:border-color .2s;background:var(--white);}
 input:focus,textarea:focus,select:focus{border-color:var(--gold);}
 textarea{resize:vertical;min-height:80px;}
 .order-summary{background:var(--cream);border-radius:4px;padding:16px;margin-bottom:20px;}
@@ -115,8 +134,10 @@ textarea{resize:vertical;min-height:80px;}
 .submit-btn:disabled{background:#aaa;cursor:not-allowed;}
 .api-error{background:#FFF0F0;border:1px solid #FFCCCC;border-radius:4px;padding:12px 16px;color:#8B0000;font-size:.85rem;margin-bottom:16px;display:none;}
 .api-error.show{display:block;}
+.api-ok{background:#F0FFF4;border:1px solid #A3E6C0;border-radius:4px;padding:12px 16px;color:#1A6B3A;font-size:.85rem;margin-bottom:16px;display:none;}
+.api-ok.show{display:block;}
 
-/* Factura */
+/* ── FACTURA ─────────────────────────────── */
 .inv-head{background:var(--dark);color:var(--white);padding:28px;text-align:center;}
 .inv-brand{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold);letter-spacing:.1em;}
 .inv-sub{font-size:.8rem;color:var(--gold-lt);margin-top:4px;letter-spacing:.08em;}
@@ -139,10 +160,69 @@ textarea{resize:vertical;min-height:80px;}
 .inv-footer{text-align:center;padding:16px 28px 28px;font-size:.8rem;color:var(--muted);letter-spacing:.04em;}
 .print-btn{display:block;margin:16px auto 0;background:var(--gold);color:var(--dark);border:none;padding:11px 32px;font-family:inherit;font-size:.9rem;letter-spacing:.07em;cursor:pointer;border-radius:2px;}
 
-/* Toast */
+/* ── TOAST ───────────────────────────────── */
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:var(--white);padding:12px 24px;border-radius:2px;font-size:.88rem;opacity:0;transition:all .35s;z-index:500;white-space:nowrap;border-left:3px solid var(--gold);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.error{border-left-color:#E74C3C;}
+
+/* ── MODAL LOGIN / REGISTRO ──────────────── */
+.auth-tabs{display:flex;border-bottom:1px solid #EEE;margin-bottom:20px;}
+.auth-tab{flex:1;background:none;border:none;padding:12px;font-family:inherit;font-size:.9rem;color:var(--muted);cursor:pointer;letter-spacing:.05em;border-bottom:2px solid transparent;transition:all .2s;}
+.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.auth-section{display:none;}
+.auth-section.active{display:block;}
+.auth-divider{text-align:center;font-size:.8rem;color:var(--muted);margin:16px 0;position:relative;}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#E0D8CC;}
+.auth-divider::before{left:0;}
+.auth-divider::after{right:0;}
+.role-badge{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:2px;letter-spacing:.06em;font-weight:600;text-transform:uppercase;margin-left:8px;}
+.badge-admin{background:#1A1612;color:var(--gold);}
+.badge-cliente{background:#F0EAE0;color:var(--mid);}
+
+/* ── PANEL CLIENTE ───────────────────────── */
+.panel-overlay{position:fixed;inset:0;background:rgba(26,22,18,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+.panel-overlay.open{opacity:1;pointer-events:all;}
+.side-panel{position:fixed;top:0;right:0;bottom:0;width:min(500px,100vw);background:var(--white);z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(26,22,18,.15);}
+.side-panel.open{transform:translateX(0);}
+.side-panel-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--dark);border-bottom:1px solid rgba(201,168,76,.25);}
+.side-panel-head h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);letter-spacing:.06em;}
+.side-panel-body{flex:1;overflow-y:auto;padding:20px 24px;}
+.panel-section-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--mid);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--gold-lt);}
+.pedido-card{background:#FAFAF8;border:1px solid #EDE6DA;border-radius:4px;padding:16px;margin-bottom:12px;}
+.pedido-card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.pedido-num{font-weight:600;font-size:.9rem;color:var(--dark);}
+.pedido-fecha{font-size:.78rem;color:var(--muted);}
+.pedido-items-list{font-size:.82rem;color:var(--mid);margin-bottom:10px;line-height:1.6;}
+.pedido-total{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);font-weight:600;}
+.pedido-actions{display:flex;gap:8px;margin-top:10px;}
+.btn-sm{background:none;border:1px solid;padding:5px 14px;border-radius:2px;cursor:pointer;font-family:inherit;font-size:.78rem;letter-spacing:.05em;transition:all .2s;}
+.btn-cancel{border-color:#C0A0A0;color:#8B4040;}
+.btn-cancel:hover{background:#8B4040;color:var(--white);border-color:#8B4040;}
+.btn-add{border-color:var(--gold-lt);color:var(--mid);}
+.btn-add:hover{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+.empty-state{text-align:center;padding:40px 0;color:var(--muted);}
+.empty-state .es-icon{font-size:2.5rem;margin-bottom:10px;}
+
+/* ── PANEL ADMIN ─────────────────────────── */
+.admin-tabs{display:flex;gap:2px;background:#F0EAE0;padding:4px;border-radius:4px;margin-bottom:20px;}
+.admin-tab{flex:1;background:none;border:none;padding:9px 12px;font-family:inherit;font-size:.82rem;color:var(--mid);cursor:pointer;letter-spacing:.04em;border-radius:2px;transition:all .2s;text-align:center;}
+.admin-tab.active{background:var(--dark);color:var(--gold);}
+.admin-section{display:none;}
+.admin-section.active{display:block;}
+.table-admin{width:100%;border-collapse:collapse;font-size:.84rem;}
+.table-admin th{background:#F0EAE0;color:var(--mid);padding:9px 12px;text-align:left;font-weight:500;letter-spacing:.04em;font-size:.78rem;}
+.table-admin td{padding:9px 12px;border-bottom:1px solid #F5F0E8;color:var(--dark);}
+.table-admin tr:last-child td{border-bottom:none;}
+.table-admin tr:hover td{background:#FAFAF8;}
+.status-pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.sp-pendiente{background:#FFF8E1;color:#8B6914;}
+.sp-despachado{background:#E8F5E9;color:#2E7D32;}
+.sp-cancelado{background:#FFEBEE;color:#8B0000;}
+.stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.stat-card{background:#F9F6F0;border:1px solid #EDE6DA;border-radius:4px;padding:14px;}
+.stat-label{font-size:.75rem;color:var(--muted);letter-spacing:.06em;margin-bottom:4px;}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--dark);font-weight:600;}
+.stat-value span{font-size:.85rem;color:var(--gold);margin-left:4px;}
 
 @media print{body>*:not(.modal-overlay){display:none!important;}.modal-overlay{position:static;background:none;padding:0;display:block!important;opacity:1!important;pointer-events:all!important;}.modal{max-height:none;box-shadow:none;}.print-btn,.close-btn{display:none!important;}}
 </style>
@@ -150,14 +230,18 @@ textarea{resize:vertical;min-height:80px;}
 <body>
 
 <div id="loader"><div class="logo-anim">✦ Glamour</div><div class="spinner"></div></div>
-
 <div class="error-banner" id="errBanner"></div>
 
 <header>
   <div class="brand">✦ <span>Glamour</span> Bisutería</div>
-  <button class="cart-btn" onclick="toggleCart()">
-    🛒 Carrito <span class="cart-count" id="cartCount">0</span>
-  </button>
+  <div class="header-actions">
+    <div id="headerUserArea">
+      <button class="login-btn" onclick="openAuthModal()">Iniciar sesión</button>
+    </div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Carrito <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
 </header>
 
 <div class="hero">
@@ -171,113 +255,199 @@ textarea{resize:vertical;min-height:80px;}
 </div>
 
 <div class="cats" id="catFilters"></div>
-
 <div class="products-section">
-  <div class="section-title">
-    Nuestros Productos
-    <span class="prod-count" id="prodCount"></span>
-  </div>
-  <div class="grid" id="productGrid">
-    <div class="no-results">Cargando productos…</div>
-  </div>
+  <div class="section-title">Nuestros Productos<span class="prod-count" id="prodCount"></span></div>
+  <div class="grid" id="productGrid"><div class="no-results">Cargando productos…</div></div>
 </div>
 
-<!-- Carrito -->
+<!-- ── CARRITO ─────────────────────────────── -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
-  <div class="cart-header">
-    <h2>🛒 Tu Carrito</h2>
-    <button class="close-btn" onclick="toggleCart()">✕</button>
-  </div>
+  <div class="cart-header"><h2>🛒 Tu Carrito</h2><button class="close-btn" onclick="toggleCart()">✕</button></div>
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="cart-total-row">
-      <span class="cart-total-label">Total</span>
-      <span class="cart-total-val" id="cartTotal">$0</span>
-    </div>
+    <div class="cart-total-row"><span class="cart-total-label">Total</span><span class="cart-total-val" id="cartTotal">$0</span></div>
     <button class="checkout-btn" onclick="openCheckout()">Finalizar Pedido →</button>
   </div>
 </div>
 
-<!-- Modal Checkout -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
+<!-- ── MODAL AUTH (Login / Registro) ─────── -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal" style="max-width:460px">
     <div class="modal-head">
-      <h2>Datos del Pedido</h2>
-      <button class="close-btn" style="color:var(--mid)" onclick="closeCheckout()">✕</button>
+      <h2>✦ Glamour</h2>
+      <button class="close-btn" style="color:var(--mid)" onclick="closeAuthModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="api-error" id="apiError"></div>
-      <div class="order-summary" id="orderSummary"></div>
-
-      <div class="form-group">
-        <label>¿Eres cliente registrado?</label>
-        <select id="clienteSelect" onchange="onClienteChange()">
-          <option value="">— Selecciona o escribe nuevo —</option>
-        </select>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Crear cuenta</button>
       </div>
 
-      <div id="nuevoClienteForm">
+      <!-- LOGIN -->
+      <div class="auth-section active" id="sectionLogin">
+        <div class="api-error" id="loginError"></div>
+        <div class="form-group">
+          <label>Usuario</label>
+          <input type="text" id="loginUser" placeholder="tu_usuario"/>
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+        </div>
+        <button class="submit-btn" onclick="doLogin()">ENTRAR</button>
+        <div class="auth-divider">cuentas de prueba</div>
+        <div style="font-size:.78rem;color:var(--muted);line-height:2;background:#FAF7F2;padding:10px 14px;border-radius:2px;">
+          <strong style="color:var(--mid)">Administradores:</strong><br>
+          marlon / marlon123 &nbsp;·&nbsp; jesus / jesus123 &nbsp;·&nbsp; sebastian / seba123<br>
+          <strong style="color:var(--mid)">Clientes de prueba:</strong><br>
+          sofia.ruiz / sofia2026 &nbsp;·&nbsp; carlos.m / carlos2026<br>
+          diana.v / diana2026 &nbsp;·&nbsp; andres.p / andres2026
+        </div>
+      </div>
+
+      <!-- REGISTRO -->
+      <div class="auth-section" id="sectionRegister">
+        <div class="api-error" id="registerError"></div>
+        <div class="api-ok" id="registerOk"></div>
         <div class="form-group">
           <label>Nombre completo *</label>
-          <input type="text" id="fNombre" placeholder="Tu nombre completo"/>
+          <input type="text" id="rNombre" placeholder="Tu nombre"/>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="form-group">
-            <label>Documento (opcional)</label>
-            <input type="text" id="fDoc" placeholder="CC o NIT"/>
+            <label>Usuario *</label>
+            <input type="text" id="rUser" placeholder="nombre_usuario"/>
           </div>
           <div class="form-group">
+            <label>Contraseña *</label>
+            <input type="password" id="rPass" placeholder="mínimo 6 caracteres"/>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group">
             <label>Teléfono</label>
-            <input type="tel" id="fTel" placeholder="3001234567"/>
+            <input type="tel" id="rTel" placeholder="3001234567"/>
+          </div>
+          <div class="form-group">
+            <label>Documento</label>
+            <input type="text" id="rDoc" placeholder="CC o NIT"/>
           </div>
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" id="fEmail" placeholder="correo@ejemplo.com"/>
+          <input type="email" id="rEmail" placeholder="correo@ejemplo.com"/>
         </div>
         <div class="form-group">
-          <label>Dirección de entrega</label>
-          <input type="text" id="fDir" placeholder="Calle, barrio, ciudad"/>
+          <label>Dirección</label>
+          <input type="text" id="rDir" placeholder="Calle, barrio, ciudad"/>
         </div>
+        <button class="submit-btn" onclick="doRegister()">CREAR MI CUENTA</button>
       </div>
+    </div>
+  </div>
+</div>
 
+<!-- ── MODAL CHECKOUT ──────────────────── -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-head"><h2>Datos del Pedido</h2><button class="close-btn" style="color:var(--mid)" onclick="closeCheckout()">✕</button></div>
+    <div class="modal-body">
+      <div class="api-error" id="apiError"></div>
+      <div class="order-summary" id="orderSummary"></div>
       <div class="form-group">
-        <label>Notas del pedido (opcional)</label>
-        <textarea id="fNotas" placeholder="Ej: pago por transferencia, regalo, entrega a domicilio…"></textarea>
+        <label>¿Eres cliente registrado?</label>
+        <select id="clienteSelect" onchange="onClienteChange()"><option value="">— Selecciona o escribe nuevo —</option></select>
       </div>
-
+      <div id="nuevoClienteForm">
+        <div class="form-group"><label>Nombre completo *</label><input type="text" id="fNombre" placeholder="Tu nombre completo"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group"><label>Documento (opcional)</label><input type="text" id="fDoc" placeholder="CC o NIT"/></div>
+          <div class="form-group"><label>Teléfono</label><input type="tel" id="fTel" placeholder="3001234567"/></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="fEmail" placeholder="correo@ejemplo.com"/></div>
+        <div class="form-group"><label>Dirección de entrega</label><input type="text" id="fDir" placeholder="Calle, barrio, ciudad"/></div>
+      </div>
+      <div class="form-group"><label>Notas del pedido (opcional)</label><textarea id="fNotas" placeholder="Ej: pago por transferencia, regalo, entrega a domicilio…"></textarea></div>
       <button class="submit-btn" id="submitBtn" onclick="enviarPedido()">CONFIRMAR PEDIDO</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Factura -->
+<!-- ── MODAL FACTURA ────────────────────── -->
 <div class="modal-overlay" id="invoiceModal">
   <div class="modal">
-    <div style="display:flex;justify-content:flex-end;padding:12px 16px 0">
-      <button class="close-btn" style="color:var(--mid)" onclick="closeInvoice()">✕</button>
-    </div>
+    <div style="display:flex;justify-content:flex-end;padding:12px 16px 0"><button class="close-btn" style="color:var(--mid)" onclick="closeInvoice()">✕</button></div>
     <div id="invoiceContent"></div>
   </div>
 </div>
 
+<!-- ── PANEL LATERAL CLIENTE ────────────── -->
+<div class="panel-overlay" id="clientPanelOverlay" onclick="closeClientPanel()"></div>
+<div class="side-panel" id="clientPanel">
+  <div class="side-panel-head">
+    <h2 id="clientPanelTitle">Mi Cuenta</h2>
+    <button class="close-btn" onclick="closeClientPanel()">✕</button>
+  </div>
+  <div class="side-panel-body" id="clientPanelBody"></div>
+</div>
+
+<!-- ── PANEL LATERAL ADMIN ──────────────── -->
+<div class="panel-overlay" id="adminPanelOverlay" onclick="closeAdminPanel()"></div>
+<div class="side-panel" id="adminPanel" style="max-width:680px;width:min(680px,100vw)">
+  <div class="side-panel-head">
+    <h2 id="adminPanelTitle">Panel Administrador</h2>
+    <button class="close-btn" onclick="closeAdminPanel()">✕</button>
+  </div>
+  <div class="side-panel-body" id="adminPanelBody"></div>
+</div>
+
+<!-- ── DROPDOWN USUARIO ─────────────────── -->
+<div id="userDropdown" class="user-dropdown" style="display:none"></div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Config API ──────────────────────────────────────────────────────────────
-// En Railway el HTML se sirve desde el mismo servidor Flask → usamos ruta relativa
-const API = "";   // vacío = mismo origen. Cambia a "https://tu-app.up.railway.app" si sirves el HTML desde otro lado
+/* ══════════════════════════════════════════════
+   BASE DE DATOS LOCAL DE USUARIOS
+══════════════════════════════════════════════ */
+const USERS_DB = [
+  // ADMINISTRADORES
+  { id:"u_marlon",  username:"marlon",    password:"marlon123", nombre:"Marlón Gélvez",      rol:"admin",   email:"marlon@glamour.co",    telefono:"3111111111" },
+  { id:"u_jesus",   username:"jesus",     password:"jesus123",  nombre:"Jesús González",     rol:"admin",   email:"jesus@glamour.co",     telefono:"3122222222" },
+  { id:"u_seba",    username:"sebastian", password:"seba123",   nombre:"Sebastián Velandia", rol:"admin",   email:"sebastian@glamour.co", telefono:"3133333333" },
+  // CLIENTES DE PRUEBA
+  { id:"u_sofia",   username:"sofia.ruiz",   password:"sofia2026",   nombre:"Sofía Ruiz",       rol:"cliente", email:"sofia@gmail.com",    telefono:"3200001111", documento:"1098001", direccion:"Calle 35 #20-15, Bucaramanga" },
+  { id:"u_carlos",  username:"carlos.m",     password:"carlos2026",  nombre:"Carlos Martínez",  rol:"cliente", email:"carlos@gmail.com",   telefono:"3200002222", documento:"1098002", direccion:"Carrera 27 #45-30, Bucaramanga" },
+  { id:"u_diana",   username:"diana.v",      password:"diana2026",   nombre:"Diana Vargas",     rol:"cliente", email:"diana@gmail.com",    telefono:"3200003333", documento:"1098003", direccion:"Avenida Quebradaseca 14A, Bucaramanga" },
+  { id:"u_andres",  username:"andres.p",     password:"andres2026",  nombre:"Andrés Prada",     rol:"cliente", email:"andres@gmail.com",   telefono:"3200004444", documento:"1098004", direccion:"Calle 56 #33-12, Floridablanca" },
+];
 
-// ── Estado ──────────────────────────────────────────────────────────────────
+// Pedidos simulados ligados a usuarios (se extenderá con pedidos reales de la sesión)
+let PEDIDOS_LOCAL = [
+  { id:"PED-0001", userId:"u_sofia",  numero:"FAC-2026-0001", fecha:"2026-05-01", estado:"despachado", total:85000,  items:[{nombre:"Collar dorado clásico",cant:1,precio:45000},{nombre:"Aretes Chandelier",cant:2,precio:20000}] },
+  { id:"PED-0002", userId:"u_sofia",  numero:"FAC-2026-0002", fecha:"2026-05-05", estado:"pendiente",  total:32000,  items:[{nombre:"Pulsera Dorada Deluxe",cant:1,precio:32000}] },
+  { id:"PED-0003", userId:"u_carlos", numero:"FAC-2026-0003", fecha:"2026-05-03", estado:"pendiente",  total:54000,  items:[{nombre:"Set Romantico",cant:1,precio:54000}] },
+  { id:"PED-0004", userId:"u_diana",  numero:"FAC-2026-0004", fecha:"2026-05-06", estado:"despachado", total:28000,  items:[{nombre:"Anillo Floral",cant:2,precio:14000}] },
+  { id:"PED-0005", userId:"u_andres", numero:"FAC-2026-0005", fecha:"2026-05-07", estado:"cancelado",  total:19000,  items:[{nombre:"Dije Mariposa",cant:1,precio:19000}] },
+];
+
+/* ══════════════════════════════════════════════
+   ESTADO GLOBAL
+══════════════════════════════════════════════ */
+const API = "";
 let todosLosProductos = [];
 let productosFiltrados = [];
-let carrito = [];        // [{producto, cantidad}]
+let carrito = [];
 let clientes = [];
 let catActual = "Todos";
 let searchTimer = null;
+let currentUser = null;
+let dropdownOpen = false;
 
-// ── Utilidades ───────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   UTILIDADES
+══════════════════════════════════════════════ */
 const fmt = n => new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",minimumFractionDigits:0}).format(n);
 
 function showToast(msg, type="ok") {
@@ -285,50 +455,342 @@ function showToast(msg, type="ok") {
   el.textContent = msg;
   el.className = "toast show" + (type==="error" ? " error" : "");
   clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => el.className = "toast", 3200);
+  window._toastTimer = setTimeout(() => el.className="toast", 3200);
 }
-
-function showApiError(msg) {
-  const el = document.getElementById("apiError");
-  el.textContent = "⚠️ " + msg;
-  el.classList.add("show");
-}
-function clearApiError() {
-  document.getElementById("apiError").classList.remove("show");
-}
+function showErr(id, msg){ const el=document.getElementById(id); el.textContent="⚠️ "+msg; el.classList.add("show"); }
+function hideErr(id){ document.getElementById(id).classList.remove("show"); }
+function showOk(id, msg){ const el=document.getElementById(id); el.textContent="✓ "+msg; el.classList.add("show"); }
 
 function emoji(nombre) {
-  const n = (nombre||"").toLowerCase();
-  if (n.includes("collar")||n.includes("cadena")||n.includes("choker")) return "📿";
-  if (n.includes("aret")||n.includes("chandelier")) return "💎";
-  if (n.includes("pulsera")||n.includes("tobillera")) return "💍";
-  if (n.includes("anillo")) return "💍";
-  if (n.includes("dije")) return "✨";
-  if (n.includes("set")) return "🎁";
+  const n=(nombre||"").toLowerCase();
+  if(n.includes("collar")||n.includes("cadena")||n.includes("choker")) return "📿";
+  if(n.includes("aret")||n.includes("chandelier")) return "💎";
+  if(n.includes("pulsera")||n.includes("tobillera")) return "💍";
+  if(n.includes("anillo")) return "💍";
+  if(n.includes("dije")) return "✨";
+  if(n.includes("set")) return "🎁";
   return "✦";
 }
 
-// ── Inicialización ───────────────────────────────────────────────────────────
+function initials(nombre) {
+  return (nombre||"?").split(" ").slice(0,2).map(w=>w[0]||"").join("").toUpperCase();
+}
+
+/* ══════════════════════════════════════════════
+   AUTH — LOGIN / REGISTRO / LOGOUT
+══════════════════════════════════════════════ */
+function openAuthModal(tab="login") {
+  closeDropdown();
+  switchAuthTab(tab);
+  hideErr("loginError"); hideErr("registerError"); hideErr("registerOk");
+  document.getElementById("authModal").classList.add("open");
+}
+function closeAuthModal() { document.getElementById("authModal").classList.remove("open"); }
+
+function switchAuthTab(tab) {
+  document.getElementById("tabLogin").classList.toggle("active", tab==="login");
+  document.getElementById("tabRegister").classList.toggle("active", tab==="register");
+  document.getElementById("sectionLogin").classList.toggle("active", tab==="login");
+  document.getElementById("sectionRegister").classList.toggle("active", tab==="register");
+}
+
+function doLogin() {
+  hideErr("loginError");
+  const username = document.getElementById("loginUser").value.trim();
+  const password = document.getElementById("loginPass").value;
+  if(!username||!password){ showErr("loginError","Completa usuario y contraseña."); return; }
+  const user = USERS_DB.find(u => u.username===username && u.password===password);
+  if(!user){ showErr("loginError","Usuario o contraseña incorrectos."); return; }
+  currentUser = user;
+  document.getElementById("loginUser").value="";
+  document.getElementById("loginPass").value="";
+  closeAuthModal();
+  renderHeaderUser();
+  showToast(`Bienvenido/a, ${user.nombre.split(" ")[0]} ✦`);
+}
+
+function doRegister() {
+  hideErr("registerError"); hideErr("registerOk");
+  const nombre   = document.getElementById("rNombre").value.trim();
+  const username = document.getElementById("rUser").value.trim();
+  const password = document.getElementById("rPass").value;
+  if(!nombre||!username||!password){ showErr("registerError","Nombre, usuario y contraseña son obligatorios."); return; }
+  if(password.length<6){ showErr("registerError","La contraseña debe tener al menos 6 caracteres."); return; }
+  if(USERS_DB.find(u=>u.username===username)){ showErr("registerError","Ese nombre de usuario ya existe. Elige otro."); return; }
+  const newUser = {
+    id: "u_"+Date.now(),
+    username, password, nombre, rol:"cliente",
+    email:    document.getElementById("rEmail").value.trim(),
+    telefono: document.getElementById("rTel").value.trim(),
+    documento:document.getElementById("rDoc").value.trim(),
+    direccion:document.getElementById("rDir").value.trim(),
+  };
+  USERS_DB.push(newUser);
+  showOk("registerOk","¡Cuenta creada! Ya puedes iniciar sesión.");
+  setTimeout(()=>switchAuthTab("login"),1400);
+}
+
+function logout() {
+  closeDropdown();
+  currentUser = null;
+  renderHeaderUser();
+  showToast("Sesión cerrada. ¡Hasta pronto! ✦");
+}
+
+/* ══════════════════════════════════════════════
+   HEADER — ZONA DE USUARIO
+══════════════════════════════════════════════ */
+function renderHeaderUser() {
+  const area = document.getElementById("headerUserArea");
+  if(!currentUser) {
+    area.innerHTML = `<button class="login-btn" onclick="openAuthModal()">Iniciar sesión</button>`;
+    return;
+  }
+  const avatarClass = currentUser.rol==="admin" ? "avatar-admin" : "avatar-client";
+  const badge = currentUser.rol==="admin"
+    ? `<span class="role-badge badge-admin">Admin</span>`
+    : "";
+  area.innerHTML = `
+    <div class="user-pill" onclick="toggleDropdown()">
+      <div class="avatar ${avatarClass}">${initials(currentUser.nombre)}</div>
+      <span class="user-name">${currentUser.nombre.split(" ")[0]}${badge}</span>
+      <span style="color:var(--gold-lt);font-size:.7rem">▾</span>
+    </div>`;
+}
+
+function toggleDropdown() {
+  dropdownOpen ? closeDropdown() : openDropdown();
+}
+
+function openDropdown() {
+  dropdownOpen = true;
+  const dd = document.getElementById("userDropdown");
+  dd.style.display = "block";
+  const adminItems = currentUser.rol==="admin" ? `
+    <button class="dd-item" onclick="closeDropdown();openAdminPanel()">🛠 Panel de Administración</button>
+    <div class="dd-sep"></div>` : "";
+  const clientItems = currentUser.rol==="cliente" ? `
+    <button class="dd-item" onclick="closeDropdown();openClientPanel()">📦 Mis Pedidos</button>
+    <button class="dd-item" onclick="closeDropdown();openClientPanel('perfil')">👤 Mi Perfil</button>
+    <div class="dd-sep"></div>` : "";
+  dd.innerHTML = `
+    <div class="dd-head">
+      <p>${currentUser.rol==="admin" ? "ADMINISTRADOR" : "CLIENTE"}</p>
+      <strong>${currentUser.nombre}</strong>
+    </div>
+    ${adminItems}${clientItems}
+    <button class="dd-item danger" onclick="logout()">→ Cerrar sesión</button>`;
+}
+
+function closeDropdown() {
+  dropdownOpen = false;
+  document.getElementById("userDropdown").style.display = "none";
+}
+
+document.addEventListener("click", e => {
+  if(dropdownOpen && !e.target.closest(".user-pill") && !e.target.closest(".user-dropdown")) closeDropdown();
+});
+
+/* ══════════════════════════════════════════════
+   PANEL CLIENTE
+══════════════════════════════════════════════ */
+function openClientPanel(tab="pedidos") {
+  if(!currentUser){ openAuthModal(); return; }
+  renderClientPanel(tab);
+  document.getElementById("clientPanelOverlay").classList.add("open");
+  document.getElementById("clientPanel").classList.add("open");
+}
+function closeClientPanel() {
+  document.getElementById("clientPanelOverlay").classList.remove("open");
+  document.getElementById("clientPanel").classList.remove("open");
+}
+
+function renderClientPanel(tab="pedidos") {
+  document.getElementById("clientPanelTitle").textContent = `✦ ${currentUser.nombre.split(" ")[0]}`;
+  const misP = PEDIDOS_LOCAL.filter(p=>p.userId===currentUser.id);
+  const body = document.getElementById("clientPanelBody");
+
+  body.innerHTML = `
+    <div class="auth-tabs" style="margin-bottom:20px">
+      <button class="auth-tab ${tab==="pedidos"?"active":""}" onclick="renderClientPanel('pedidos')">Mis Pedidos</button>
+      <button class="auth-tab ${tab==="perfil"?"active":""}" onclick="renderClientPanel('perfil')">Mi Perfil</button>
+    </div>
+    ${tab==="pedidos" ? renderMisPedidos(misP) : renderMiPerfil()}`;
+}
+
+function renderMisPedidos(pedidos) {
+  if(!pedidos.length) return `<div class="empty-state"><div class="es-icon">📦</div><p>Aún no tienes pedidos.<br>¡Explora la tienda!</p></div>`;
+  return pedidos.map(p=>{
+    const badge = `<span class="status-pill sp-${p.estado}">${p.estado}</span>`;
+    const itemsList = p.items.map(i=>`${i.nombre} × ${i.cant} — ${fmt(i.precio*i.cant)}`).join("<br>");
+    const cancelBtn = p.estado==="pendiente"
+      ? `<button class="btn-sm btn-cancel" onclick="cancelarPedido('${p.id}')">✕ Cancelar</button>` : "";
+    const addBtn = p.estado==="pendiente"
+      ? `<button class="btn-sm btn-add" onclick="addItemToPedido('${p.id}')">+ Añadir</button>` : "";
+    return `
+      <div class="pedido-card" id="pcard-${p.id}">
+        <div class="pedido-card-head">
+          <div>
+            <div class="pedido-num">${p.numero}</div>
+            <div class="pedido-fecha">${p.fecha}</div>
+          </div>
+          ${badge}
+        </div>
+        <div class="pedido-items-list">${itemsList}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="pedido-total">${fmt(p.total)}</span>
+          <div class="pedido-actions">${cancelBtn}${addBtn}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function renderMiPerfil() {
+  const u = currentUser;
+  return `
+    <div class="panel-section-title">Información personal</div>
+    <div style="display:grid;gap:14px">
+      <div class="form-group"><label>Nombre</label><input type="text" id="pNombre" value="${u.nombre||""}"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label>Teléfono</label><input type="tel" id="pTel" value="${u.telefono||""}"/></div>
+        <div class="form-group"><label>Documento</label><input type="text" id="pDoc" value="${u.documento||""}"/></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="pEmail" value="${u.email||""}"/></div>
+      <div class="form-group"><label>Dirección</label><input type="text" id="pDir" value="${u.direccion||""}"/></div>
+      <button class="submit-btn" onclick="guardarPerfil()">GUARDAR CAMBIOS</button>
+    </div>`;
+}
+
+function cancelarPedido(id) {
+  const p = PEDIDOS_LOCAL.find(x=>x.id===id);
+  if(!p||p.estado!=="pendiente") return;
+  if(!confirm(`¿Cancelar el pedido ${p.numero}?`)) return;
+  p.estado = "cancelado";
+  renderClientPanel("pedidos");
+  showToast("Pedido cancelado.");
+}
+
+function addItemToPedido(id) {
+  showToast("Agrega productos al carrito y realiza un nuevo pedido ✦");
+  closeClientPanel();
+}
+
+function guardarPerfil() {
+  currentUser.nombre    = document.getElementById("pNombre").value.trim() || currentUser.nombre;
+  currentUser.telefono  = document.getElementById("pTel").value.trim();
+  currentUser.email     = document.getElementById("pEmail").value.trim();
+  currentUser.documento = document.getElementById("pDoc").value.trim();
+  currentUser.direccion = document.getElementById("pDir").value.trim();
+  renderHeaderUser();
+  showToast("Perfil actualizado ✦");
+}
+
+/* ══════════════════════════════════════════════
+   PANEL ADMINISTRADOR
+══════════════════════════════════════════════ */
+function openAdminPanel() {
+  if(!currentUser||currentUser.rol!=="admin"){ showToast("Acceso restringido","error"); return; }
+  renderAdminPanel("pedidos");
+  document.getElementById("adminPanelOverlay").classList.add("open");
+  document.getElementById("adminPanel").classList.add("open");
+}
+function closeAdminPanel() {
+  document.getElementById("adminPanelOverlay").classList.remove("open");
+  document.getElementById("adminPanel").classList.remove("open");
+}
+
+function renderAdminPanel(tab="pedidos") {
+  document.getElementById("adminPanelTitle").textContent = `🛠 Panel — ${currentUser.nombre.split(" ")[0]}`;
+  const total = PEDIDOS_LOCAL.reduce((s,p)=>s+(p.estado!=="cancelado"?p.total:0),0);
+  const pendientes = PEDIDOS_LOCAL.filter(p=>p.estado==="pendiente").length;
+  const clientes_count = [...new Set(PEDIDOS_LOCAL.map(p=>p.userId))].length;
+
+  document.getElementById("adminPanelBody").innerHTML = `
+    <div class="stat-cards">
+      <div class="stat-card"><div class="stat-label">PEDIDOS TOTALES</div><div class="stat-value">${PEDIDOS_LOCAL.length}</div></div>
+      <div class="stat-card"><div class="stat-label">PENDIENTES</div><div class="stat-value">${pendientes} <span>activos</span></div></div>
+      <div class="stat-card"><div class="stat-label">FACTURADO</div><div class="stat-value" style="font-size:1.2rem">${fmt(total)}</div></div>
+      <div class="stat-card"><div class="stat-label">CLIENTES</div><div class="stat-value">${USERS_DB.filter(u=>u.rol==="cliente").length}</div></div>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab ${tab==="pedidos"?"active":""}" onclick="renderAdminPanel('pedidos')">Pedidos</button>
+      <button class="admin-tab ${tab==="clientes"?"active":""}" onclick="renderAdminPanel('clientes')">Clientes</button>
+      <button class="admin-tab ${tab==="admins"?"active":""}" onclick="renderAdminPanel('admins')">Admins</button>
+    </div>
+    <div class="admin-section active">
+      ${tab==="pedidos" ? renderAdminPedidos() : tab==="clientes" ? renderAdminClientes() : renderAdminAdmins()}
+    </div>`;
+}
+
+function renderAdminPedidos() {
+  const rows = PEDIDOS_LOCAL.map(p=>`
+    <tr>
+      <td><strong>${p.numero}</strong></td>
+      <td>${p.fecha}</td>
+      <td>${(USERS_DB.find(u=>u.id===p.userId)||{nombre:"—"}).nombre}</td>
+      <td>${fmt(p.total)}</td>
+      <td><span class="status-pill sp-${p.estado}">${p.estado}</span></td>
+      <td>
+        ${p.estado==="pendiente"?`
+          <button class="btn-sm btn-add" style="font-size:.7rem;padding:3px 10px" onclick="adminCambiarEstado('${p.id}','despachado')">Despachar</button>
+          <button class="btn-sm btn-cancel" style="font-size:.7rem;padding:3px 10px;margin-left:4px" onclick="adminCambiarEstado('${p.id}','cancelado')">Cancelar</button>`:"—"}
+      </td>
+    </tr>`).join("");
+  return `<table class="table-admin"><thead><tr><th>Factura</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderAdminClientes() {
+  const clts = USERS_DB.filter(u=>u.rol==="cliente");
+  const rows = clts.map(u=>{
+    const n = PEDIDOS_LOCAL.filter(p=>p.userId===u.id).length;
+    return `<tr><td><strong>${u.nombre}</strong></td><td style="color:var(--muted)">${u.username}</td><td>${u.email||"—"}</td><td>${u.telefono||"—"}</td><td>${n} pedido${n!==1?"s":""}</td></tr>`;
+  }).join("");
+  return `<table class="table-admin"><thead><tr><th>Nombre</th><th>Usuario</th><th>Email</th><th>Teléfono</th><th>Pedidos</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderAdminAdmins() {
+  const admins = USERS_DB.filter(u=>u.rol==="admin");
+  const rows = admins.map(u=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar avatar-admin" style="width:32px;height:32px;font-size:.8rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--gold);color:var(--dark)">${initials(u.nombre)}</div><strong>${u.nombre}</strong></div></td>
+      <td style="color:var(--muted)">${u.username}</td>
+      <td><code style="font-size:.75rem;background:#F0EAE0;padding:2px 6px;border-radius:2px">${u.password}</code></td>
+      <td>${u.email||"—"}</td>
+    </tr>`).join("");
+  return `<table class="table-admin"><thead><tr><th>Administrador</th><th>Usuario</th><th>Clave</th><th>Email</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function adminCambiarEstado(id, estado) {
+  const p = PEDIDOS_LOCAL.find(x=>x.id===id);
+  if(!p) return;
+  p.estado = estado;
+  renderAdminPanel("pedidos");
+  showToast(`Pedido ${p.numero} → ${estado}`);
+}
+
+/* ══════════════════════════════════════════════
+   INICIALIZACIÓN DE PRODUCTOS
+══════════════════════════════════════════════ */
 async function init() {
+  renderHeaderUser();
   try {
     await Promise.all([cargarProductos(), cargarClientes()]);
   } finally {
-    document.getElementById("loader").style.display = "none";
+    document.getElementById("loader").style.display="none";
   }
 }
 
 async function cargarProductos() {
   try {
     const r = await fetch(`${API}/api/productos`);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
     todosLosProductos = await r.json();
-    renderCats();
-    aplicarFiltros();
+    renderCats(); aplicarFiltros();
   } catch(e) {
     document.getElementById("productGrid").innerHTML =
       `<div class="no-results">⚠️ No se pudo conectar al servidor.<br><small>Revisa que la API esté corriendo.</small></div>`;
     const b = document.getElementById("errBanner");
-    b.textContent = "⚠️ Error conectando con el servidor: " + e.message;
+    b.textContent = "⚠️ Error conectando con el servidor: "+e.message;
     b.classList.add("show");
   }
 }
@@ -336,153 +798,103 @@ async function cargarProductos() {
 async function cargarClientes() {
   try {
     const r = await fetch(`${API}/api/clientes`);
-    if (!r.ok) return;
+    if(!r.ok) return;
     clientes = await r.json();
     const sel = document.getElementById("clienteSelect");
-    clientes.forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c.id;
-      opt.textContent = `${c.nombre}${c.documento ? " · "+c.documento : ""}`;
+    clientes.forEach(c=>{
+      const opt=document.createElement("option");
+      opt.value=c.id;
+      opt.textContent=`${c.nombre}${c.documento?" · "+c.documento:""}`;
       sel.appendChild(opt);
     });
-    const optN = document.createElement("option");
-    optN.value = "nuevo"; optN.textContent = "➕ Registrarme como nuevo cliente";
+    const optN=document.createElement("option");
+    optN.value="nuevo"; optN.textContent="➕ Registrarme como nuevo cliente";
     sel.appendChild(optN);
-  } catch(e) { /* silencioso */ }
+  } catch(e){}
 }
 
-// ── Categorías ───────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   CATEGORÍAS Y FILTROS
+══════════════════════════════════════════════ */
 function renderCats() {
-  const cats = ["Todos", ...new Set(todosLosProductos.map(p => p.categoria_nombre || "General"))];
-  const container = document.getElementById("catFilters");
-  container.innerHTML = "";
-  cats.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.className = "cat-pill" + (cat === catActual ? " active" : "");
-    btn.textContent = cat;
-    btn.onclick = () => { catActual = cat; document.querySelectorAll(".cat-pill").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); aplicarFiltros(); };
+  const cats=["Todos",...new Set(todosLosProductos.map(p=>p.categoria_nombre||"General"))];
+  const container=document.getElementById("catFilters");
+  container.innerHTML="";
+  cats.forEach(cat=>{
+    const btn=document.createElement("button");
+    btn.className="cat-pill"+(cat===catActual?" active":"");
+    btn.textContent=cat;
+    btn.onclick=()=>{ catActual=cat; document.querySelectorAll(".cat-pill").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); aplicarFiltros(); };
     container.appendChild(btn);
   });
 }
 
-// ── Búsqueda y filtros ───────────────────────────────────────────────────────
-function debounceSearch() {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(aplicarFiltros, 300);
-}
-
-function buscar() {
-  clearTimeout(searchTimer);
-  aplicarFiltros();
-}
+function debounceSearch(){ clearTimeout(searchTimer); searchTimer=setTimeout(aplicarFiltros,300); }
+function buscar(){ clearTimeout(searchTimer); aplicarFiltros(); }
 
 function aplicarFiltros() {
-  const q = document.getElementById("searchInput").value.toLowerCase().trim();
-  let lista = todosLosProductos;
-
-  if (catActual !== "Todos") {
-    lista = lista.filter(p => (p.categoria_nombre || "General") === catActual);
-  }
-  if (q) {
-    lista = lista.filter(p =>
-      (p.nombre||"").toLowerCase().includes(q) ||
-      (p.codigo||"").toLowerCase().includes(q) ||
-      (p.descripcion||"").toLowerCase().includes(q) ||
-      (p.categoria_nombre||"").toLowerCase().includes(q)
-    );
-  }
-  productosFiltrados = lista;
+  const q=document.getElementById("searchInput").value.toLowerCase().trim();
+  let lista=todosLosProductos;
+  if(catActual!=="Todos") lista=lista.filter(p=>(p.categoria_nombre||"General")===catActual);
+  if(q) lista=lista.filter(p=>(p.nombre||"").toLowerCase().includes(q)||(p.codigo||"").toLowerCase().includes(q)||(p.descripcion||"").toLowerCase().includes(q)||(p.categoria_nombre||"").toLowerCase().includes(q));
+  productosFiltrados=lista;
   renderProductos(lista);
 }
 
-// ── Render ───────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   RENDER PRODUCTOS
+══════════════════════════════════════════════ */
 function renderProductos(lista) {
-  const grid = document.getElementById("productGrid");
-  const count = document.getElementById("prodCount");
-  count.textContent = lista.length + " producto" + (lista.length !== 1 ? "s" : "");
-
-  if (!lista.length) {
-    grid.innerHTML = `<div class="no-results">💎 No encontramos productos con ese criterio.</div>`;
-    return;
-  }
-  grid.innerHTML = lista.map(p => {
-    const enCarrito = carrito.find(i => i.producto.id === p.id);
-    const agotado = p.stock === 0;
-    const stockBadge = agotado
-      ? `<span class="badge-stock badge-low">Agotado</span>`
-      : p.stock <= (p.stock_minimo || 5)
-        ? `<span class="badge-stock badge-low">¡Últimas ${p.stock}!</span>`
-        : `<span class="badge-stock">${p.stock} disp.</span>`;
-    const btnLabel = agotado ? "Agotado" : enCarrito ? `En carrito (${enCarrito.cantidad})` : "+ Agregar";
-    return `
-    <div class="card">
-      <div class="card-img">${emoji(p.nombre)}${stockBadge}</div>
-      <div class="card-body">
-        <div class="card-cat">${p.categoria_nombre || "General"}</div>
-        <div class="card-name">${p.nombre}</div>
-        <div class="card-code">${p.codigo}</div>
-        <div class="card-footer">
-          <span class="price">${fmt(p.precio_venta)}</span>
-          <button class="add-btn" onclick="agregarAlCarrito(${p.id})" ${agotado?"disabled":""}>
-            ${btnLabel}
-          </button>
-        </div>
-      </div>
-    </div>`;
+  const grid=document.getElementById("productGrid");
+  const count=document.getElementById("prodCount");
+  count.textContent=lista.length+" producto"+(lista.length!==1?"s":"");
+  if(!lista.length){ grid.innerHTML=`<div class="no-results">💎 No encontramos productos con ese criterio.</div>`; return; }
+  grid.innerHTML=lista.map(p=>{
+    const enCarrito=carrito.find(i=>i.producto.id===p.id);
+    const agotado=p.stock===0;
+    const stockBadge=agotado?`<span class="badge-stock badge-low">Agotado</span>`:p.stock<=(p.stock_minimo||5)?`<span class="badge-stock badge-low">¡Últimas ${p.stock}!</span>`:`<span class="badge-stock">${p.stock} disp.</span>`;
+    const btnLabel=agotado?"Agotado":enCarrito?`En carrito (${enCarrito.cantidad})`:"+Agregar";
+    return `<div class="card"><div class="card-img">${emoji(p.nombre)}${stockBadge}</div><div class="card-body"><div class="card-cat">${p.categoria_nombre||"General"}</div><div class="card-name">${p.nombre}</div><div class="card-code">${p.codigo}</div><div class="card-footer"><span class="price">${fmt(p.precio_venta)}</span><button class="add-btn" onclick="agregarAlCarrito(${p.id})" ${agotado?"disabled":""}>${btnLabel}</button></div></div></div>`;
   }).join("");
 }
 
-// ── Carrito ───────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   CARRITO
+══════════════════════════════════════════════ */
 function agregarAlCarrito(id) {
-  const p = todosLosProductos.find(x => x.id === id);
-  if (!p || p.stock === 0) return;
-  const existe = carrito.find(x => x.producto.id === id);
-  if (existe) {
-    if (existe.cantidad >= p.stock) { showToast("No hay más stock disponible ⚠️","error"); return; }
-    existe.cantidad++;
-  } else {
-    carrito.push({producto: p, cantidad: 1});
-  }
+  const p=todosLosProductos.find(x=>x.id===id);
+  if(!p||p.stock===0) return;
+  const existe=carrito.find(x=>x.producto.id===id);
+  if(existe){ if(existe.cantidad>=p.stock){showToast("No hay más stock disponible ⚠️","error");return;} existe.cantidad++; }
+  else carrito.push({producto:p,cantidad:1});
   actualizarCarrito();
   showToast(`✦ ${p.nombre} añadido al carrito`);
-  // Redibujar tarjetas para actualizar label del botón
-  renderProductos(productosFiltrados.length ? productosFiltrados : todosLosProductos);
+  renderProductos(productosFiltrados.length?productosFiltrados:todosLosProductos);
 }
 
 function cambiarQty(id, delta) {
-  const item = carrito.find(x => x.producto.id === id);
-  if (!item) return;
-  item.cantidad += delta;
-  if (item.cantidad <= 0) carrito = carrito.filter(x => x.producto.id !== id);
+  const item=carrito.find(x=>x.producto.id===id);
+  if(!item) return;
+  item.cantidad+=delta;
+  if(item.cantidad<=0) carrito=carrito.filter(x=>x.producto.id!==id);
   actualizarCarrito();
-  renderProductos(productosFiltrados.length ? productosFiltrados : todosLosProductos);
+  renderProductos(productosFiltrados.length?productosFiltrados:todosLosProductos);
 }
 
 function actualizarCarrito() {
-  const totalUnidades = carrito.reduce((s,i) => s+i.cantidad, 0);
-  const totalPrecio   = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
-  document.getElementById("cartCount").textContent = totalUnidades;
-  document.getElementById("cartFooter").style.display = carrito.length ? "block" : "none";
-  if (carrito.length) document.getElementById("cartTotal").textContent = fmt(totalPrecio);
-
-  const container = document.getElementById("cartItems");
-  if (!carrito.length) {
-    container.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><p>Tu carrito está vacío</p></div>`;
-    return;
-  }
-  container.innerHTML = carrito.map(i => `
+  const tu=carrito.reduce((s,i)=>s+i.cantidad,0);
+  const tp=carrito.reduce((s,i)=>s+i.producto.precio_venta*i.cantidad,0);
+  document.getElementById("cartCount").textContent=tu;
+  document.getElementById("cartFooter").style.display=carrito.length?"block":"none";
+  if(carrito.length) document.getElementById("cartTotal").textContent=fmt(tp);
+  const container=document.getElementById("cartItems");
+  if(!carrito.length){ container.innerHTML=`<div class="cart-empty"><div class="icon">🛒</div><p>Tu carrito está vacío</p></div>`; return; }
+  container.innerHTML=carrito.map(i=>`
     <div class="cart-item">
-      <div>
-        <div class="ci-name">${i.producto.nombre}</div>
-        <div class="ci-meta">${fmt(i.producto.precio_venta)} × ${i.cantidad}</div>
-        <div class="ci-controls">
-          <button class="qty-btn" onclick="cambiarQty(${i.producto.id},-1)">−</button>
-          <span class="qty-num">${i.cantidad}</span>
-          <button class="qty-btn" onclick="cambiarQty(${i.producto.id},1)">+</button>
-        </div>
+      <div><div class="ci-name">${i.producto.nombre}</div><div class="ci-meta">${fmt(i.producto.precio_venta)} × ${i.cantidad}</div>
+        <div class="ci-controls"><button class="qty-btn" onclick="cambiarQty(${i.producto.id},-1)">−</button><span class="qty-num">${i.cantidad}</span><button class="qty-btn" onclick="cambiarQty(${i.producto.id},1)">+</button></div>
       </div>
-      <div style="text-align:right">
-        <div class="ci-price">${fmt(i.producto.precio_venta * i.cantidad)}</div>
+      <div style="text-align:right"><div class="ci-price">${fmt(i.producto.precio_venta*i.cantidad)}</div>
         <button class="ci-remove" onclick="carrito=carrito.filter(x=>x.producto.id!==${i.producto.id});actualizarCarrito();renderProductos(productosFiltrados.length?productosFiltrados:todosLosProductos);">✕</button>
       </div>
     </div>`).join("");
@@ -493,135 +905,102 @@ function toggleCart() {
   document.getElementById("cartPanel").classList.toggle("open");
 }
 
-// ── Checkout ──────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════════════ */
 function openCheckout() {
-  if (!carrito.length) { showToast("El carrito está vacío","error"); return; }
-  toggleCart();
-  clearApiError();
-  const subtotal = carrito.reduce((s,i) => s + i.producto.precio_venta * i.cantidad, 0);
-  document.getElementById("orderSummary").innerHTML = `
-    <h3>Resumen del pedido</h3>
-    ${carrito.map(i=>`<div class="sum-item"><span>${i.producto.nombre} × ${i.cantidad}</span><span>${fmt(i.producto.precio_venta*i.cantidad)}</span></div>`).join("")}
-    <div class="sum-total"><span>Total</span><span>${fmt(subtotal)}</span></div>`;
+  if(!carrito.length){showToast("El carrito está vacío","error");return;}
+  toggleCart(); hideErr("apiError");
+  const subtotal=carrito.reduce((s,i)=>s+i.producto.precio_venta*i.cantidad,0);
+  document.getElementById("orderSummary").innerHTML=`<h3>Resumen del pedido</h3>${carrito.map(i=>`<div class="sum-item"><span>${i.producto.nombre} × ${i.cantidad}</span><span>${fmt(i.producto.precio_venta*i.cantidad)}</span></div>`).join("")}<div class="sum-total"><span>Total</span><span>${fmt(subtotal)}</span></div>`;
+
+  // Pre-rellenar con datos del usuario si está logueado
+  if(currentUser && currentUser.rol==="cliente") {
+    document.getElementById("fNombre").value = currentUser.nombre||"";
+    document.getElementById("fEmail").value  = currentUser.email||"";
+    document.getElementById("fTel").value    = currentUser.telefono||"";
+    document.getElementById("fDoc").value    = currentUser.documento||"";
+    document.getElementById("fDir").value    = currentUser.direccion||"";
+  }
   document.getElementById("checkoutModal").classList.add("open");
 }
 
-function closeCheckout() { document.getElementById("checkoutModal").classList.remove("open"); }
-
-function onClienteChange() {
-  const val = document.getElementById("clienteSelect").value;
-  document.getElementById("nuevoClienteForm").style.display = (val===""||val==="nuevo") ? "block" : "none";
-}
+function closeCheckout(){ document.getElementById("checkoutModal").classList.remove("open"); }
+function onClienteChange(){ const v=document.getElementById("clienteSelect").value; document.getElementById("nuevoClienteForm").style.display=(v===""||v==="nuevo")?"block":"none"; }
 
 async function enviarPedido() {
-  clearApiError();
-  const btn = document.getElementById("submitBtn");
-  const val = document.getElementById("clienteSelect").value;
-  btn.disabled = true; btn.textContent = "Procesando…";
-
+  hideErr("apiError");
+  const btn=document.getElementById("submitBtn");
+  const val=document.getElementById("clienteSelect").value;
+  btn.disabled=true; btn.textContent="Procesando…";
   try {
     let cliente_id;
+    if(val&&val!=="nuevo"){ cliente_id=parseInt(val); }
+    else {
+      const nombre=document.getElementById("fNombre").value.trim();
+      if(!nombre){showErr("apiError","Escribe tu nombre para continuar.");btn.disabled=false;btn.textContent="CONFIRMAR PEDIDO";return;}
+      const res=await fetch(`${API}/api/clientes`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre,documento:document.getElementById("fDoc").value,telefono:document.getElementById("fTel").value,email:document.getElementById("fEmail").value,direccion:document.getElementById("fDir").value})});
+      const data=await res.json();
+      if(!res.ok) throw new Error(data.error||"Error al registrar cliente");
+      cliente_id=data.id;
+    }
+    const items=carrito.map(i=>({producto_id:i.producto.id,cantidad:i.cantidad,precio_unitario:i.producto.precio_venta,costo_unitario:i.producto.costo||0}));
+    const pedRes=await fetch(`${API}/api/pedidos`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({cliente_id,items,descuento:0,notas:document.getElementById("fNotas").value})});
+    const pedData=await pedRes.json();
+    if(!pedRes.ok) throw new Error(pedData.error||"Error al crear pedido");
 
-    if (val && val !== "nuevo") {
-      cliente_id = parseInt(val);
-    } else {
-      const nombre = document.getElementById("fNombre").value.trim();
-      if (!nombre) { showApiError("Escribe tu nombre para continuar."); btn.disabled=false; btn.textContent="CONFIRMAR PEDIDO"; return; }
-      const res = await fetch(`${API}/api/clientes`, {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          nombre,
-          documento: document.getElementById("fDoc").value,
-          telefono:  document.getElementById("fTel").value,
-          email:     document.getElementById("fEmail").value,
-          direccion: document.getElementById("fDir").value,
-        })
+    // Si hay usuario logueado, guardar pedido localmente también
+    if(currentUser) {
+      PEDIDOS_LOCAL.push({
+        id:"PED-"+Date.now(),userId:currentUser.id,
+        numero:pedData.numero_factura||"FAC-LOCAL",
+        fecha:new Date().toLocaleDateString("es-CO"),
+        estado:"pendiente",
+        total:carrito.reduce((s,i)=>s+i.producto.precio_venta*i.cantidad,0),
+        items:carrito.map(i=>({nombre:i.producto.nombre,cant:i.cantidad,precio:i.producto.precio_venta}))
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al registrar cliente");
-      cliente_id = data.id;
     }
 
-    const items = carrito.map(i => ({
-      producto_id:     i.producto.id,
-      cantidad:        i.cantidad,
-      precio_unitario: i.producto.precio_venta,
-      costo_unitario:  i.producto.costo || 0,
-    }));
-
-    const pedRes = await fetch(`${API}/api/pedidos`, {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ cliente_id, items, descuento: 0, notas: document.getElementById("fNotas").value })
-    });
-    const pedData = await pedRes.json();
-    if (!pedRes.ok) throw new Error(pedData.error || "Error al crear pedido");
-
-    // Éxito
-    closeCheckout();
-    carrito = [];
-    actualizarCarrito();
-    await cargarProductos();   // refresca stock en toda la tienda
+    closeCheckout(); carrito=[]; actualizarCarrito();
+    await cargarProductos();
     mostrarFactura(pedData);
-    showToast("✅ Pedido registrado: " + pedData.numero_factura);
-
-  } catch(e) {
-    showApiError(e.message);
-  } finally {
-    btn.disabled = false; btn.textContent = "CONFIRMAR PEDIDO";
-  }
+    showToast("✅ Pedido registrado: "+pedData.numero_factura);
+  } catch(e){ showErr("apiError",e.message); }
+  finally{ btn.disabled=false; btn.textContent="CONFIRMAR PEDIDO"; }
 }
 
-// ── Factura ───────────────────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════
+   FACTURA
+══════════════════════════════════════════════ */
 function mostrarFactura(data) {
-  const {numero_factura, pedido, items} = data;
-  const fecha = new Date().toLocaleDateString("es-CO",{day:"2-digit",month:"long",year:"numeric"});
-  const estadoClass = `estado-${pedido.estado || "pendiente"}`;
-
-  const rows = items.map(i => `
-    <tr>
-      <td>${i.producto_nombre || i.codigo || "—"}</td>
-      <td style="text-align:center">${i.cantidad}</td>
-      <td style="text-align:right">${fmt(i.precio_unitario)}</td>
-      <td style="text-align:right">${fmt(i.subtotal)}</td>
-    </tr>`).join("");
-
-  document.getElementById("invoiceContent").innerHTML = `
-    <div class="inv-head">
-      <div class="inv-brand">✦ Glamour Bisutería</div>
-      <div class="inv-sub">Bucaramanga, Santander · Colombia</div>
-    </div>
+  const {numero_factura,pedido,items}=data;
+  const fecha=new Date().toLocaleDateString("es-CO",{day:"2-digit",month:"long",year:"numeric"});
+  const estadoClass=`estado-${pedido.estado||"pendiente"}`;
+  const rows=items.map(i=>`<tr><td>${i.producto_nombre||i.codigo||"—"}</td><td style="text-align:center">${i.cantidad}</td><td style="text-align:right">${fmt(i.precio_unitario)}</td><td style="text-align:right">${fmt(i.subtotal)}</td></tr>`).join("");
+  document.getElementById("invoiceContent").innerHTML=`
+    <div class="inv-head"><div class="inv-brand">✦ Glamour Bisutería</div><div class="inv-sub">Bucaramanga, Santander · Colombia</div></div>
     <div class="inv-body">
       <div class="inv-meta">
         <div class="inv-meta-box"><div class="lbl">FACTURA N°</div><div class="val">${numero_factura}</div></div>
         <div class="inv-meta-box"><div class="lbl">FECHA</div><div class="val">${fecha}</div></div>
-        <div class="inv-meta-box"><div class="lbl">CLIENTE</div><div class="val">${pedido.cliente_nombre || "—"}</div></div>
-        <div class="inv-meta-box">
-          <div class="lbl">ESTADO</div>
-          <div class="val"><span class="inv-estado ${estadoClass}">${pedido.estado || "pendiente"}</span></div>
-        </div>
+        <div class="inv-meta-box"><div class="lbl">CLIENTE</div><div class="val">${pedido.cliente_nombre||"—"}</div></div>
+        <div class="inv-meta-box"><div class="lbl">ESTADO</div><div class="val"><span class="inv-estado ${estadoClass}">${pedido.estado||"pendiente"}</span></div></div>
       </div>
-      <table class="inv-table">
-        <thead><tr><th>PRODUCTO</th><th style="text-align:center">CANT</th><th style="text-align:right">PRECIO</th><th style="text-align:right">SUBTOTAL</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+      <table class="inv-table"><thead><tr><th>PRODUCTO</th><th style="text-align:center">CANT</th><th style="text-align:right">PRECIO</th><th style="text-align:right">SUBTOTAL</th></tr></thead><tbody>${rows}</tbody></table>
       <div class="inv-totals">
         <div class="row"><span>Subtotal</span><span>${fmt(pedido.subtotal)}</span></div>
-        ${pedido.descuento > 0 ? `<div class="row"><span>Descuento</span><span>−${fmt(pedido.descuento)}</span></div>` : ""}
+        ${pedido.descuento>0?`<div class="row"><span>Descuento</span><span>−${fmt(pedido.descuento)}</span></div>`:""}
         <div class="grand"><span>TOTAL</span><span>${fmt(pedido.total)}</span></div>
       </div>
     </div>
-    <div class="inv-footer">
-      ¡Gracias por tu compra! · Tu pedido ha sido registrado y está siendo procesado.<br>
-      Jesús González · Marlón Gélvez · Sebastián Velandia · Grupo 3
-    </div>
-    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
-  `;
+    <div class="inv-footer">¡Gracias por tu compra! · Tu pedido ha sido registrado y está siendo procesado.<br>Jesús González · Marlón Gélvez · Sebastián Velandia · Grupo 3</div>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>`;
   document.getElementById("invoiceModal").classList.add("open");
 }
 
-function closeInvoice() { document.getElementById("invoiceModal").classList.remove("open"); }
+function closeInvoice(){ document.getElementById("invoiceModal").classList.remove("open"); }
 
-// ── Start ─────────────────────────────────────────────────────────────────────
+/* ── START ─────────────────────────────────── */
 init();
 </script>
 </body>
