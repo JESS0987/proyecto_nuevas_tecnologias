@@ -93,6 +93,14 @@ def index():
             return send_from_directory(folder, "index.html")
     return "<h1>index.html no encontrado</h1>", 404
 
+@app.route("/img/productos/<path:filename>", methods=["GET"])
+def serve_imagen(filename):
+    for folder in [BASE, PROJECT_DIR]:
+        img_dir = os.path.join(folder, "img", "productos")
+        if os.path.isdir(img_dir):
+            return send_from_directory(img_dir, filename)
+    return "Imagen no encontrada", 404
+
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok", "mongo": MONGO_OK, "project_dir": PROJECT_DIR})
