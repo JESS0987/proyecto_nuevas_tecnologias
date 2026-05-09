@@ -679,8 +679,8 @@ function renderProductos(lista){
     const agotado=p.stock===0;
     const stockBadge=agotado?`<span class="badge-stock badge-low">Agotado</span>`:p.stock<=(p.stock_minimo||5)?`<span class="badge-stock badge-low">¡Últimas ${p.stock}!</span>`:`<span class="badge-stock">${p.stock} disp.</span>`;
     const btnLabel=agotado?"Agotado":enCarrito?`En carrito (${enCarrito.cantidad})`:"+Agregar";
-    const emojiSpan=`<span style="font-size:3.5rem;position:relative;z-index:0">${emoji(p.nombre)}</span>`;
-    const imgHTML=`<img src="img/productos/${p.codigo}.PNG" alt="${p.nombre}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.src='img/productos/${p.codigo}.png';this.onerror=function(){this.style.display='none';}">`;
+    const emojiSpan=`<span class="card-emoji" style="font-size:3.5rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">${emoji(p.nombre)}</span>`;
+    const imgHTML=`<img src="img/productos/${p.codigo}.PNG" alt="${p.nombre}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;" onerror="this.src='img/productos/${p.codigo}.png';this.onerror=function(){this.remove();}">`;
     return`<div class="card"><div class="card-img">${emojiSpan}${imgHTML}${stockBadge}</div><div class="card-body"><div class="card-cat">${p.categoria_nombre||"General"}</div><div class="card-name">${p.nombre}</div><div class="card-code">${p.codigo}</div><div class="card-footer"><span class="price">${fmt(p.precio_venta)}</span><button class="add-btn" onclick="agregarAlCarrito(${p.id})" ${agotado?"disabled":""}>${btnLabel}</button></div></div></div>`;
   }).join("");
 }
