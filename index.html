@@ -486,13 +486,23 @@ function renderMisPedidos(pedidos){
   }).join("");
 }
 
-function cancelarPedido(id){
+async function cancelarPedido(id){
   const p=PEDIDOS_LOCAL.find(x=>x.id===id);
   if(!p||p.estado!=="pendiente")return;
   if(!confirm(`¿Cancelar el pedido ${p.numero}?`))return;
+  if(p.sqliteId){
+    try{
+      const r=await fetch(`${API}/api/pedidos/${p.sqliteId}/estado`,{
+        method:"PATCH",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({estado:"cancelado"})
+      });
+      if(!r.ok)throw new Error("Error en servidor");
+    }catch(e){showToast("Error al cancelar: "+e.message,"error");return;}
+  }
   p.estado="cancelado";
   renderClientPanel("pedidos");
-  showToast("Pedido cancelado.");
+  showToast("Pedido cancelado ✦");
 }
 
 function renderMiPerfil(){
@@ -752,6 +762,27 @@ async function enviarPedido(){
     const pedRes=await fetch(`${API}/api/pedidos`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({cliente_id,items,descuento:0,notas:document.getElementById("fNotas").value})});
     const pedData=await pedRes.json();
     if(!pedRes.ok)throw new Error(pedData.error||"Error al crear pedido");
+
+    if(currentUser){
+      PEDIDOS_LOCAL.push({
+        id:pedData.pedido.id||("PL-"+Date.now()),
+        sqliteId:pedData.pedido.id,
+        userId:currentUser.id,
+        numero:pedData.numero_factura,
+        fecha:new Date().toLocaleDateString("es-CO"),
+        estado:"pendiente",
+        total:carrito.reduce((s,i)=>s+i.producto.precio_venta*i.cantidad,0),
+        items:carrito.map(i=>({nombre:i.producto.nombre,cant:i.cantidad,precio:i.producto.precio_venta}))
+      });
+    }
+
+    closeCheckout();carrito=[];actualizarCarrito();
+    await cargarProductos();
+    mostrarFactura(pedData);
+    showToast("✅ Pedido registrado: "+pedData.numero_factura);
+  }catch(e){showErr("apiError",e.message);}
+  finally{btn.disabled=false;btn.textContent="CONFIRMAR PEDIDO";}
+}
 
     // Guardar en pedidos locales si hay usuario logueado
     if(currentUser){
