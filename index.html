@@ -54,7 +54,7 @@ header{background:var(--dark);color:var(--white);padding:0 clamp(16px,4vw,64px);
 .card{background:var(--white);border-radius:4px;box-shadow:var(--shadow);overflow:hidden;transition:transform .25s,box-shadow .25s;}
 .card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,22,18,.13);}
 .card-img{height:200px;background:linear-gradient(135deg,#F5ECD7 0%,#EAD9C0 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden;}
-.card-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.card-img img{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;background:#F5ECD7;padding:8px;box-sizing:border-box;}
 .badge-stock{position:absolute;top:10px;right:10px;background:var(--dark);color:var(--gold);font-size:.7rem;padding:3px 8px;border-radius:2px;letter-spacing:.05em;z-index:1;}
 .badge-low{background:#8B3A3A;color:#FFD5D5;}
 .card-body{padding:16px;}
