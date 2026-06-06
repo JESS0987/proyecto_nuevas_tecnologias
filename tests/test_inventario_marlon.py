@@ -1,6 +1,6 @@
 """
-Pruebas Unitarias y Funcionales — Inventario / Entradas / Categorías
-Autor: Marlon (TechSoft Solutions S.A.S.)
+Pruebas Unitarias y Funcionales — Inventario / Entradas / Categorias
+Autor: Marlon Gelvez (TechSoft Solutions S.A.S.)
 Framework: pytest
 Ejecutar: python -m pytest tests/test_inventario_marlon.py -v
 """
@@ -15,7 +15,7 @@ from app.Models.producto_model import ProductoModel
 
 
 # ======================================================================
-#  FIXTURE: base de datos limpia antes/después de cada prueba
+#  FIXTURE: base de datos limpia antes/despues de cada prueba
 # ======================================================================
 
 @pytest.fixture(autouse=True)
@@ -26,9 +26,6 @@ def bd_limpia():
         conn.execute("DELETE FROM entradas_inventario WHERE producto_id IN (SELECT id FROM productos WHERE codigo LIKE 'ML_%')")
         conn.execute("DELETE FROM items_pedido WHERE producto_id IN (SELECT id FROM productos WHERE codigo LIKE 'ML_%')")
         conn.execute("DELETE FROM productos WHERE codigo LIKE 'ML_%'")
-        conn.execute("INSERT OR IGNORE INTO categorias (id, nombre) VALUES (1, 'Bisutería')")
-        conn.execute("INSERT OR IGNORE INTO categorias (id, nombre) VALUES (2, 'Accesorios')")
-        conn.execute("INSERT OR IGNORE INTO categorias (id, nombre) VALUES (3, 'Decoración')")
         conn.execute("PRAGMA foreign_keys = ON")
         conn.commit()
     yield
@@ -42,7 +39,7 @@ def bd_limpia():
 
 
 # ======================================================================
-#  PRUEBAS UNITARIAS — Entradas de Inventario
+#  PRUEBAS UNITARIAS - Entradas de Inventario
 # ======================================================================
 
 class TestEntradasInventario:
@@ -51,7 +48,7 @@ class TestEntradasInventario:
         """Registrar una entrada debe sumar correctamente la cantidad al stock actual."""
         pid = ProductoModel.crear(
             codigo="ML_ENT01", nombre="Aretes Marlon Dorados",
-            descripcion="Aretes de prueba", categoria_id=1,
+            descripcion="Aretes de prueba", categoria_id=2,
             costo=4000, precio_venta=9000, stock=10, stock_minimo=3
         )
         ProductoModel.registrar_entrada(pid, cantidad=20, costo_unitario=4000, proveedor="Proveedor Test")
@@ -62,7 +59,7 @@ class TestEntradasInventario:
         """El costo unitario debe actualizarse con la nueva entrada."""
         pid = ProductoModel.crear(
             codigo="ML_ENT02", nombre="Collar Marlon Plateado",
-            descripcion="Collar de prueba", categoria_id=1,
+            descripcion="Collar de prueba", categoria_id=2,
             costo=5000, precio_venta=12000, stock=5, stock_minimo=2
         )
         ProductoModel.registrar_entrada(pid, cantidad=10, costo_unitario=6500, proveedor="Dist. Nacional")
@@ -70,13 +67,13 @@ class TestEntradasInventario:
         assert producto["costo"] == 6500
 
     def test_historial_entradas_registra_movimiento(self):
-        """Después de una entrada, el historial debe contener al menos un registro."""
+        """Despues de una entrada, el historial debe contener al menos un registro."""
         pid = ProductoModel.crear(
             codigo="ML_ENT03", nombre="Pulsera Marlon Hilo",
             descripcion="Pulsera de prueba", categoria_id=2,
             costo=2500, precio_venta=5000, stock=8, stock_minimo=2
         )
-        ProductoModel.registrar_entrada(pid, cantidad=12, costo_unitario=2500, notas="Reposición mensual")
+        ProductoModel.registrar_entrada(pid, cantidad=12, costo_unitario=2500, notas="Reposicion mensual")
         historial = ProductoModel.historial_entradas(producto_id=pid)
         assert len(historial) >= 1
 
@@ -95,7 +92,7 @@ class TestEntradasInventario:
         """Varias entradas consecutivas deben acumular el stock total."""
         pid = ProductoModel.crear(
             codigo="ML_ENT05", nombre="Dije Marlon Estrella",
-            descripcion="Dije de prueba", categoria_id=1,
+            descripcion="Dije de prueba", categoria_id=2,
             costo=1500, precio_venta=4000, stock=5, stock_minimo=3
         )
         ProductoModel.registrar_entrada(pid, cantidad=10, costo_unitario=1500)
@@ -105,55 +102,55 @@ class TestEntradasInventario:
 
 
 # ======================================================================
-#  PRUEBAS UNITARIAS — Categorías
+#  PRUEBAS UNITARIAS - Categorias
 # ======================================================================
 
 class TestCategorias:
 
     def test_obtener_categorias_retorna_lista(self):
-        """El sistema debe devolver al menos las categorías insertadas."""
+        """El sistema debe devolver al menos las categorias insertadas."""
         categorias = ProductoModel.obtener_categorias()
         assert isinstance(categorias, list)
         assert len(categorias) >= 1
 
     def test_categorias_contienen_campo_nombre(self):
-        """Cada categoría debe tener el campo 'nombre'."""
+        """Cada categoria debe tener el campo nombre."""
         categorias = ProductoModel.obtener_categorias()
         for cat in categorias:
             assert "nombre" in dict(cat)
 
     def test_producto_hereda_nombre_categoria(self):
-        """El producto debe mostrar el nombre de su categoría correctamente."""
+        """El producto debe mostrar el nombre de su categoria correctamente."""
         pid = ProductoModel.crear(
             codigo="ML_CAT01", nombre="Aretes Marlon Resina",
-            descripcion="Con categoría Bisutería", categoria_id=1,
+            descripcion="Con categoria Bisuteria", categoria_id=2,
             costo=3000, precio_venta=7000, stock=15, stock_minimo=3
         )
         producto = ProductoModel.obtener_por_id(pid)
         assert producto["categoria_nombre"] == "Bisutería"
 
-    def test_producto_categoria_accesorios(self):
-        """Un producto de categoría Accesorios debe reflejar ese nombre."""
+    def test_producto_categoria_general(self):
+        """Un producto de categoria General debe reflejar ese nombre."""
         pid = ProductoModel.crear(
             codigo="ML_CAT02", nombre="Bolso Marlon Mini",
-            descripcion="Accesorio de moda", categoria_id=2,
+            descripcion="Accesorio de moda", categoria_id=1,
             costo=15000, precio_venta=30000, stock=5, stock_minimo=1
         )
         producto = ProductoModel.obtener_por_id(pid)
-        assert producto["categoria_nombre"] == "Accesorios"
+        assert producto["categoria_nombre"] == "General"
 
 
 # ======================================================================
-#  PRUEBAS UNITARIAS — Validaciones adicionales del modelo
+#  PRUEBAS UNITARIAS - Validaciones adicionales del modelo
 # ======================================================================
 
 class TestValidacionesModelo:
 
     def test_producto_inactivo_no_aparece_en_busqueda(self):
-        """Un producto eliminado (inactivo) no debe aparecer en resultados de búsqueda."""
+        """Un producto eliminado no debe aparecer en resultados de busqueda."""
         pid = ProductoModel.crear(
             codigo="ML_VAL01", nombre="Cadena Marlon Inactiva",
-            descripcion="Producto para eliminar", categoria_id=1,
+            descripcion="Producto para eliminar", categoria_id=2,
             costo=5000, precio_venta=10000, stock=10, stock_minimo=2
         )
         ProductoModel.eliminar(pid)
@@ -162,25 +159,20 @@ class TestValidacionesModelo:
 
     def test_producto_inactivo_no_aparece_en_obtener_por_codigo(self):
         """Un producto eliminado no debe ser retornado por obtener_por_codigo."""
-        ProductoModel.crear(
-            codigo="ML_VAL02", nombre="Anillo Marlon Inactivo",
-            descripcion="Para verificar inactivación por código", categoria_id=1,
-            costo=4000, precio_venta=8000, stock=5, stock_minimo=1
-        )
         pid = ProductoModel.crear(
-            codigo="ML_VAL02B", nombre="Anillo Marlon Copia",
-            descripcion="", categoria_id=1,
+            codigo="ML_VAL02", nombre="Anillo Marlon Inactivo",
+            descripcion="Para verificar inactivacion", categoria_id=2,
             costo=4000, precio_venta=8000, stock=5, stock_minimo=1
         )
         ProductoModel.eliminar(pid)
-        resultado = ProductoModel.obtener_por_codigo("ML_VAL02B")
+        resultado = ProductoModel.obtener_por_codigo("ML_VAL02")
         assert resultado is None
 
     def test_actualizar_stock_con_cero_no_cambia_valor(self):
         """Ajustar stock en 0 no debe cambiar el stock actual."""
         pid = ProductoModel.crear(
             codigo="ML_VAL03", nombre="Choker Marlon Negro",
-            descripcion="", categoria_id=1,
+            descripcion="", categoria_id=2,
             costo=2000, precio_venta=5000, stock=12, stock_minimo=3
         )
         ProductoModel.actualizar_stock(pid, 0)
@@ -188,25 +180,25 @@ class TestValidacionesModelo:
         assert producto["stock"] == 12
 
     def test_actualizar_nombre_y_descripcion(self):
-        """Actualizar nombre y descripción debe persistir los cambios."""
+        """Actualizar nombre y descripcion debe persistir los cambios."""
         pid = ProductoModel.crear(
             codigo="ML_VAL04", nombre="Pulsera Marlon Original",
-            descripcion="Descripción original", categoria_id=1,
+            descripcion="Descripcion original", categoria_id=2,
             costo=3500, precio_venta=7000, stock=10, stock_minimo=2
         )
         ProductoModel.actualizar(
             pid, "ML_VAL04", "Pulsera Marlon Actualizada",
-            "Descripción nueva", 1, 3500, 7000, 10, 2
+            "Descripcion nueva", 2, 3500, 7000, 10, 2
         )
         producto = ProductoModel.obtener_por_id(pid)
         assert producto["nombre"] == "Pulsera Marlon Actualizada"
-        assert producto["descripcion"] == "Descripción nueva"
+        assert producto["descripcion"] == "Descripcion nueva"
 
     def test_stock_bajo_con_stock_igual_a_minimo(self):
-        """Un producto con stock exactamente igual al mínimo debe aparecer como stock bajo."""
+        """Un producto con stock exactamente igual al minimo debe aparecer como stock bajo."""
         pid = ProductoModel.crear(
             codigo="ML_VAL05", nombre="Set Marlon Exacto",
-            descripcion="", categoria_id=1,
+            descripcion="", categoria_id=2,
             costo=6000, precio_venta=13000, stock=5, stock_minimo=5
         )
         bajos = ProductoModel.con_stock_bajo()
@@ -215,7 +207,7 @@ class TestValidacionesModelo:
 
 
 # ======================================================================
-#  PRUEBAS FUNCIONALES — API REST (endpoints adicionales)
+#  PRUEBAS FUNCIONALES - API REST
 # ======================================================================
 
 from api import app as flask_app
@@ -231,12 +223,11 @@ def client():
 class TestEndpointEntradas:
 
     def _crear_producto_funcional(self):
-        """Crea un producto de prueba funcional y retorna su id."""
         try:
             pid = ProductoModel.crear(
                 codigo="ML_FT01", nombre="Producto Marlon Funcional",
-                descripcion="Para pruebas funcionales de entradas",
-                categoria_id=1, costo=4000,
+                descripcion="Para pruebas funcionales",
+                categoria_id=2, costo=4000,
                 precio_venta=9000, stock=20, stock_minimo=3
             )
             return pid
@@ -309,7 +300,7 @@ class TestEndpointEntradas:
         assert data["status"] == "ok"
 
     def test_listar_pedidos_retorna_lista(self, client):
-        """GET /api/pedidos debe retornar una lista (puede estar vacía)."""
+        """GET /api/pedidos debe retornar una lista."""
         resp = client.get("/api/pedidos")
         assert resp.status_code == 200
         data = json.loads(resp.data)
